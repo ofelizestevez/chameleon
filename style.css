@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
+
+:root {
+    --main-background-color: #1B2329;
+    --main-foreground-color: #ffffff;
+
+    --secondary-background-color: #CDD9EA;
+    --secondary-foreground-color: #000000;
+    --background-image: url("bg.jpg");
+    --font-family: 'Montserrat', sans-serif;
+
+    --separator-width: 1px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;   
+}
+
+body {
+    background-color: var(--main-background-color);
+}
+
+.main {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    font-family: var(--font-family);
+    color: var(--main-foreground-color);
+    position: relative;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    background-color: var(--main-background-color);
+}
+
+.content, .main_content {
+    width: 100%;
+    height: 100%;
+    background-color: var(--main-background-color);
+}
+
+.main_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0px 48px;
+    width: 100%;
+    height: 100%;
+    gap: 16px;
+}
+
+.top_bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.command_bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.command_dropdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--secondary-background-color);
+    color: var(--secondary-foreground-color);
+    padding: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.command_input, input::placeholder{
+    all: unset;
+    color: var(--main-foreground-color);
+    width: 30ch;
+    overflow: scroll;
+}
+
+.info {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.weather {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.weather_icons {
+    filter: invert(100%);
+}
+.bar_separator {
+    height: 24px;
+    width: var(--separator-width);
+    background-color: var(--main-foreground-color);
+}
+
+.separator {
+    height: var(--separator-width);
+    background-color: var(--main-foreground-color);
+}
+.bookmarks {
+    display: flex;
+    gap: 48px;
+}
+
+.title {
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+li, a{
+    text-decoration: none;
+    color: white;
+    list-style-type: none;
+    margin-bottom: 8px;
+    font-weight: 300;
+
+}
+
+li:hover, a:hover{
+    text-decoration: underline;
+
+}
+
+.settings_icon {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    filter: invert(100%);
+    cursor: pointer;
+}
