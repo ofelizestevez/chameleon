@@ -10,6 +10,7 @@
     --font-family: 'Montserrat', sans-serif;
 
     --separator-width: 1px;
+    --border-radius: 8px;
 }
 
 * {
@@ -30,7 +31,6 @@ body {
     grid-template-columns: 1fr 2fr;
     font-family: var(--font-family);
     color: var(--main-foreground-color);
-    position: relative;
 }
 
 .image {
@@ -62,6 +62,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+    z-index: 1;
 }
 
 .command_bar {
@@ -70,17 +72,54 @@ body {
     justify-content: center;
     gap: 8px;
 }
+
 .command_dropdown {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+
     background-color: var(--secondary-background-color);
     color: var(--secondary-foreground-color);
     padding: 6px;
-    border-radius: 8px;
+    border-radius: var(--border-radius);
     cursor: pointer;
 }
 
+.currently_selected{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.currently_selected:hover {
+    text-decoration: underline;
+}
+
+.command_dropdown[data-dropdown-visibility="visible"]{
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.dropdown_menu {
+    position: absolute;
+    top: calc(12px + 24px);
+    left: 0px;
+    padding: 6px;
+    color: var(--secondary-foreground-color);
+    background-color: var(--secondary-background-color);
+    border-radius: 0 var(--border-radius) var(--border-radius) var(--border-radius);
+}
+
+.dropdown_menu[data-dropdown-visibility="invisible"]{
+    display: none;
+}
+
+.dropdown_option {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--secondary-foreground-color);
+}
+
+.dropdown_menu li:last-child {
+    margin-bottom: 0px;
+}
 .command_input, input::placeholder{
     all: unset;
     color: var(--main-foreground-color);
@@ -100,7 +139,8 @@ body {
     gap: 8px;
 }
 
-.weather_icons {
+/* INVERT WOULDN'T WORK IN LIGHT BACKGROUND... MAYBE MAKE IT DO SOMETHING ELSE? OPPOSITE COLOR? */
+.weather_icon {
     filter: invert(100%);
 }
 .bar_separator {
@@ -116,6 +156,8 @@ body {
 .bookmarks {
     display: flex;
     gap: 48px;
+    position: relative;
+    z-index: 0;
 }
 
 .title {
@@ -143,4 +185,33 @@ li:hover, a:hover{
     right: 50px;
     filter: invert(100%);
     cursor: pointer;
+}
+
+.settings {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0px 48px;
+    gap: 16px;
+}
+
+/* Animations */
+
+@keyframes fade_in_content {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.settings_icon, .separator{
+    animation: fade_in_content 0.9s forwards;
+}
+
+.top_bar, .bookmarks {
+    opacity: 0;
+    animation: fade_in_content 0.7s forwards 0.2s;
 }

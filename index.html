@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Simple-ish Startpage</title>
     <link rel="stylesheet" href="style.css">
+    <script src="premain.js"></script>
 </head>
 
 <body>
@@ -16,25 +17,33 @@
             <div class="main_content">
                 <div class="top_bar">
                     <div class="command_bar">
-                        <div class="command_dropdown" alt="Dropdown Menu">
-                            <p>Google</p>
-                            <img src="icons/chevron-down.svg" alt="Dropdown Chevron" class="command_icon">
+                        <div class="command_dropdown" id="command_dropdown" alt="Dropdown Menu" data-dropdown-visibility="invisible" data-selected="google">
+                            <div class="currently_selected" id="currently_selected">
+                                <p id="command_text">Google</p>
+                                <img  id="command_icon" src="icons/search.svg" alt="Search Icon" class="command_icon">
+                            </div>
+
+                            <div class="dropdown_menu" id="dropdown_menu" data-dropdown-visibility="invisible">
+                                <ul id="dropdown_values">
+                                </ul>
+                            </div>
                         </div>
-                        <input type="text" placeholder="Type Here" name="command_input" id="command_input" class="command_input">
+                        <input type="text" placeholder="Type Here" name="command_input" id="command_input"
+                            class="command_input">
                     </div>
                     <div class="info">
-                        <p class="time">12:57 AM</p>
+                        <p class="time" id="time">XX:XX XX</p>
                         <div class="bar_separator"></div>
-                        <p class="date">Oct 30</p>
+                        <p class="date" id="date">XXX XX</p>
                         <div class="bar_separator"></div>
-                        <div class="weather">
-                            <img class="weather_icons" src="./weather icons/sun.svg" alt="Weather Condition Icon">
-                            <p class="weather_text">60°F</p>
+                        <div class="weather" id="weather">
+                            <img class="weather_icon" id="weather_icon" src="./weather icons/sun.svg" alt="Weather Condition Icon">
+                            <p class="weather_text" id="weather_text" >XX°F</p>
                         </div>
                     </div>
                 </div>
                 <div class="separator"></div>
-                <div class="bookmarks">
+                <div class="bookmarks" id="bookmarks">
                     <div class="column">
                         <h1 class="title">General</h1>
                         <ul class="links">
@@ -69,11 +78,35 @@
                         </ul>
                     </div>
                 </div>
+                <img src="icons/cog.svg" alt="Settings Icon" class="settings_icon">
             </div>
-            <img src="icons/cog.svg" alt="Settings Icon" class="settings_icon">
+
+            <!-- <div class="settings">
+                <h1 class="title">Links</h1>
+                <div class="link_section">
+                    <h2 class="link">General <img src="/icons/chevron-right.svg" alt=""></h2>
+                    <table>
+                        <tr>
+                            <th>Title</th>
+                            <th>Link</th>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="" id=""></td>
+                            <td><input type="text" name="" id=""></td>
+                        </tr>
+                    </table>
+                </div>
+                <h1 class="title">Image Source</h1>
+                <h1 class="title">Dropdown</h1>
+                <h1 class="title">Hide Aspects</h1>
+            </div> -->
+
             <!-- <div class="settings"></div> -->
         </div>
+
     </div>
+
+    <script src="postmain.js"></script>
 </body>
 
 </html>
