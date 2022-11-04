@@ -15,7 +15,12 @@ let bookmarkElement = document.getElementById("bookmarks");
 // Change Time
 function setTimeAndPeriod(time = new Date()) {
     let hour = time.getHours();
-    let mins = time.getMinutes();
+    let mins = time.getMinutes().toString();
+
+    if (mins.length == 1){
+        mins = "0" + mins;
+    }
+
     let am_pm = "AM";
 
     if (hour > 12) {
@@ -35,7 +40,7 @@ function setTimeWithoutPeriod(time = new Date()) {
 // Change Date
 function setDate(time = new Date()) {
     let month = time.getMonth();
-    let day = time.getDay();
+    let day = time.getDate();
 
     let monthNumToText = {
         0: "Jan",
@@ -150,8 +155,11 @@ function setDropdown(){
         "duckduckgo": "search.svg",
         "bing": "search.svg"
     }
-    let currently_selected = commandText.innerHTML.toLowerCase();
-    
+
+    let currently_selected = localStorage.getItem("currentCommand");
+    commandText.innerHTML = currently_selected.charAt(0).toLocaleUpperCase() + currently_selected.slice(1);
+    commandIcon.src = "./icons/" + dropdownValuesWithIcons[currently_selected];
+
     for (let dropdownValue of dropdownValues){
         if (dropdownValue.toLocaleLowerCase() != currently_selected.toLocaleLowerCase()){
             let dropdownElement = document.createElement("li");
@@ -173,6 +181,7 @@ function setDropdown(){
                 commandText.innerHTML = dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
                 commandIcon.src = "./icons/" + dropdownValuesWithIcons[dropdownValue];
                 dropdownValuesElement.innerHTML = "";
+                localStorage.setItem("currentCommand",dropdownValue);
                 setDropdown();
             })
             dropdownValuesElement.appendChild(dropdownElement);
