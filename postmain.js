@@ -79,7 +79,7 @@ function setWeather() {
 
     if (lat != null) {
         let fetchString = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + long + "&current_weather=true&temperature_unit=fahrenheit";
-        console.log(fetchString)
+
         fetch(fetchString)
             .then((response) => response.json())
             .then((data) => {
@@ -126,7 +126,7 @@ function setWeather() {
                     99: "cloud-lightning.svg",
                 };
 
-                if(time.getHours() > 7 && time.getHours < 19){
+                if(time.getHours() > 7 && time.getHours() < 19){
                     var codeToIconPath = Object.assign({}, sun, otherWeatherCodes);
                 }
                 else {
@@ -166,9 +166,9 @@ function setDropdown(){
             let dropdownElementText = document.createElement("p");
             let dropdownIcon = document.createElement("img");
         
-            dropdownElement.className = "dropdown_option";
+            dropdownElement.classList.add("dropdown_option");
             dropdownElementText.innerHTML = dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
-            dropdownIcon.className = "icon";
+            dropdownIcon.classList.add("icon");
             dropdownIcon.src = "./icons/" + dropdownValuesWithIcons[dropdownValue];
             
             dropdownElement.appendChild(dropdownElementText);
@@ -192,6 +192,41 @@ function setDropdown(){
 
 // Change Image + Colors
 // Bookmarks
+function setBookmarks(){
+    let bookmarks = JSON.parse(localStorage.getItem("bookmarks"))
+
+    for (let column of Object.entries(bookmarks)){
+        let columnTitle = column[0];
+        let columnLinks = column[1];
+        
+        let columnTitleElement = document.createElement("h1");
+        let columnWrapper = document.createElement("div");
+        let columnLinkWrapper = document.createElement("ul");
+
+        columnWrapper.classList.add("column");
+        columnTitleElement.classList.add("title");
+        columnLinkWrapper.classList.add("links");
+        
+        columnTitleElement.innerHTML = columnTitle;
+        for(let link of Object.entries(columnLinks)){
+            let linkElement = document.createElement("li");
+            let linkChildElement = document.createElement("a");
+
+            linkChildElement.innerHTML = link[0];
+            linkChildElement.href = link[1];
+
+            linkElement.appendChild(linkChildElement);
+            columnLinkWrapper.appendChild(linkElement);
+        }
+
+        columnWrapper.appendChild(columnTitleElement);
+        columnWrapper.appendChild(columnLinkWrapper);
+        
+        bookmarkElement.appendChild(columnWrapper);
+        // console.log(columnTitle,columnLinks);
+    }
+
+}
 
 // Main
 let time = new Date();
@@ -207,6 +242,9 @@ setTimeout(() => {
 }, secondsLeftInMin * 1000);
 
 setDropdown()
+setBookmarks()
+
+
 
 commandButton.addEventListener("click", function() {
     if (dropdownMenu.getAttribute("data-dropdown-visibility") == "invisible"){
