@@ -3,9 +3,12 @@
 :root {
     --main-background-color: #1B2329;
     --main-foreground-color: #ffffff;
+    --main-invert-value: 100%;
 
     --secondary-background-color: #CDD9EA;
     --secondary-foreground-color: #000000;
+    --secondary-invert-value: 0%;
+    
     --background-image: url("bg.jpg");
     --font-family: 'Montserrat', sans-serif;
 
@@ -96,6 +99,10 @@ body {
     border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
+.command_icon {
+    filter: invert(var(--secondary-invert-value));
+}
+
 .dropdown_menu {
     position: absolute;
     top: calc(12px + 24px);
@@ -141,7 +148,7 @@ body {
 
 /* INVERT WOULDN'T WORK IN LIGHT BACKGROUND... MAYBE MAKE IT DO SOMETHING ELSE? OPPOSITE COLOR? */
 .weather_icon {
-    filter: invert(100%);
+    filter: invert(var(--main-invert-value));
 }
 .bar_separator {
     height: 24px;
@@ -167,7 +174,8 @@ body {
 
 li, a{
     text-decoration: none;
-    color: white;
+    color: var(--main-foreground-color);
+    /* color: white; */
     list-style-type: none;
     margin-bottom: 8px;
     font-weight: 300;
@@ -183,7 +191,7 @@ li:hover, a:hover{
     position: absolute;
     bottom: 50px;
     right: 50px;
-    filter: invert(100%);
+    filter: invert(var(--main-invert-value));
     cursor: pointer;
 }
 

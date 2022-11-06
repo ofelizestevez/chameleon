@@ -1,3 +1,6 @@
+// ==============================================
+// Initialize elements
+// ==============================================
 let timeElement = document.getElementById("time");
 let dateElement = document.getElementById("date");
 
@@ -8,16 +11,36 @@ let commandDropdown = document.getElementById("dropdown_menu")
 let commandButton = document.getElementById("currently_selected");
 let commandText = document.getElementById("command_text");
 let commandIcon = document.getElementById("command_icon");
+let commandInput = document.getElementById("command_input");
+
 let dropdownMenu = document.getElementById("command_dropdown");
 let dropdownValuesElement = document.getElementById("dropdown_values");
 
 let bookmarkElement = document.getElementById("bookmarks");
+
+
+let imageElement = document.getElementById("image");
+
+// ==============================================
+// Useful Functions
+// ==============================================
+
+// RGB to Hex
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
 // Change Time
 function setTimeAndPeriod(time = new Date()) {
     let hour = time.getHours();
     let mins = time.getMinutes().toString();
 
-    if (mins.length == 1){
+    if (mins.length == 1) {
         mins = "0" + mins;
     }
 
@@ -25,6 +48,10 @@ function setTimeAndPeriod(time = new Date()) {
 
     if (hour > 12) {
         am_pm = "PM"
+    }
+
+    if (hour == 0){
+        hour = 12;
     }
 
     timeElement.innerHTML = hour + ":" + mins + " " + am_pm;
@@ -126,7 +153,7 @@ function setWeather() {
                     99: "cloud-lightning.svg",
                 };
 
-                if(time.getHours() > 7 && time.getHours() < 19){
+                if (time.getHours() > 7 && time.getHours() < 19) {
                     var codeToIconPath = Object.assign({}, sun, otherWeatherCodes);
                 }
                 else {
@@ -143,14 +170,14 @@ function setWeather() {
 }
 
 // Make Dropdown Functional
-function setDropdown(){
-    let dropdownValues = ["google", "user", "browse", "reddit", "youtube" , "twitch", "duckduckgo", "bing"];
-    let dropdownValuesWithIcons =  {
+function setDropdown() {
+    let dropdownValues = ["google", "user", "browse", "reddit", "youtube", "twitch", "duckduckgo", "bing"];
+    let dropdownValuesWithIcons = {
         "google": "search.svg",
         "user": "arrow-right.svg",
         "browse": "globe.svg",
         "reddit": "user.svg",
-        "youtube" : "tv.svg",
+        "youtube": "tv.svg",
         "twitch": "youtube.svg",
         "duckduckgo": "search.svg",
         "bing": "search.svg"
@@ -160,28 +187,28 @@ function setDropdown(){
     commandText.innerHTML = currently_selected.charAt(0).toLocaleUpperCase() + currently_selected.slice(1);
     commandIcon.src = "./icons/" + dropdownValuesWithIcons[currently_selected];
 
-    for (let dropdownValue of dropdownValues){
-        if (dropdownValue.toLocaleLowerCase() != currently_selected.toLocaleLowerCase()){
+    for (let dropdownValue of dropdownValues) {
+        if (dropdownValue.toLocaleLowerCase() != currently_selected.toLocaleLowerCase()) {
             let dropdownElement = document.createElement("li");
             let dropdownElementText = document.createElement("p");
             let dropdownIcon = document.createElement("img");
-        
+
             dropdownElement.classList.add("dropdown_option");
             dropdownElementText.innerHTML = dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
-            dropdownIcon.classList.add("icon");
+            dropdownIcon.classList.add("command_icon");
             dropdownIcon.src = "./icons/" + dropdownValuesWithIcons[dropdownValue];
-            
+
             dropdownElement.appendChild(dropdownElementText);
             dropdownElement.appendChild(dropdownIcon);
-        
-            dropdownElement.addEventListener("click", function() {
-                dropdownMenu.setAttribute("data-dropdown-visibility","invisible");
-                commandDropdown.setAttribute("data-dropdown-visibility","invisible");
-        
+
+            dropdownElement.addEventListener("click", function () {
+                dropdownMenu.setAttribute("data-dropdown-visibility", "invisible");
+                commandDropdown.setAttribute("data-dropdown-visibility", "invisible");
+
                 commandText.innerHTML = dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
                 commandIcon.src = "./icons/" + dropdownValuesWithIcons[dropdownValue];
                 dropdownValuesElement.innerHTML = "";
-                localStorage.setItem("currentCommand",dropdownValue);
+                localStorage.setItem("currentCommand", dropdownValue);
                 setDropdown();
             })
             dropdownValuesElement.appendChild(dropdownElement);
@@ -191,14 +218,24 @@ function setDropdown(){
 }
 
 // Change Image + Colors
+function setImageUnsplash() {
+    // Get Random Image From Unsplash
+    fetch("https://source.unsplash.com/random/")
+        .then((response) => {
+            let url = response.url;
+            img.crossOrigin = "Anonymous";
+            img.src = url;
+        })
+}
+
 // Bookmarks
-function setBookmarks(){
+function setBookmarks() {
     let bookmarks = JSON.parse(localStorage.getItem("bookmarks"))
 
-    for (let column of Object.entries(bookmarks)){
+    for (let column of Object.entries(bookmarks)) {
         let columnTitle = column[0];
         let columnLinks = column[1];
-        
+
         let columnTitleElement = document.createElement("h1");
         let columnWrapper = document.createElement("div");
         let columnLinkWrapper = document.createElement("ul");
@@ -206,9 +243,9 @@ function setBookmarks(){
         columnWrapper.classList.add("column");
         columnTitleElement.classList.add("title");
         columnLinkWrapper.classList.add("links");
-        
+
         columnTitleElement.innerHTML = columnTitle;
-        for(let link of Object.entries(columnLinks)){
+        for (let link of Object.entries(columnLinks)) {
             let linkElement = document.createElement("li");
             let linkChildElement = document.createElement("a");
 
@@ -221,14 +258,14 @@ function setBookmarks(){
 
         columnWrapper.appendChild(columnTitleElement);
         columnWrapper.appendChild(columnLinkWrapper);
-        
-        bookmarkElement.appendChild(columnWrapper);
-        // console.log(columnTitle,columnLinks);
-    }
 
+        bookmarkElement.appendChild(columnWrapper);
+    }
 }
 
+// ==============================================
 // Main
+// ==============================================
 let time = new Date();
 let secondsLeftInMin = 60 - time.getSeconds();
 
@@ -244,15 +281,107 @@ setTimeout(() => {
 setDropdown()
 setBookmarks()
 
+const colorThief = new ColorThief();
+const img = new Image();
 
+img.addEventListener("load", function () {
+    let imagePalette = colorThief.getPalette(img,2)
+    let imagePaletteHex = []
+    for (let colorRGB of imagePalette){
+        imagePaletteHex.push(rgbToHex(colorRGB[0],colorRGB[1],colorRGB[2]))
+    }
 
-commandButton.addEventListener("click", function() {
-    if (dropdownMenu.getAttribute("data-dropdown-visibility") == "invisible"){
-        dropdownMenu.setAttribute("data-dropdown-visibility","visible")
-        commandDropdown.setAttribute("data-dropdown-visibility","visible")
+    let mainForegroundColor = "";
+    let mainInvertValue = "";
+    let secondaryForegroundColor = "";
+    let secondaryInvertValue = "";
+    
+    root.style.setProperty("--background-image", 'url("' + img.src + '")')
+    root.style.setProperty("--main-background-color", imagePaletteHex[0])
+    if ((0.299 * imagePalette[0][0] + 0.587 * imagePalette[0][1] + 0.114 * imagePalette[0][2])/255 > 0.5){
+        mainForegroundColor = "#000000"
+        mainInvertValue = "0%"
     }
     else {
-        dropdownMenu.setAttribute("data-dropdown-visibility","invisible")
-        commandDropdown.setAttribute("data-dropdown-visibility","invisible")
+        root.style.setProperty("--main-foreground-color", "#FFFFFF")
+        mainForegroundColor = "#FFFFFF"
+        mainInvertValue = "100%"
     }
-  });
+    root.style.setProperty("--secondary-background-color", imagePaletteHex[1])
+    if ((0.299 * imagePalette[1][0] + 0.587 * imagePalette[1][1] + 0.114 * imagePalette[1][2])/255 > 0.5){
+        secondaryForegroundColor = "#000000";
+        secondaryInvertValue = "0%";
+    }
+    else {
+        secondaryForegroundColor = "#FFFFFF"
+        secondaryInvertValue = "100%"
+    }
+
+    root.style.setProperty("--background-image", 'url("' + img.src + '")')
+    root.style.setProperty("--main-background-color", imagePaletteHex[0])
+    root.style.setProperty("--main-foreground-color", mainForegroundColor)
+    root.style.setProperty("--main-invert-value", mainInvertValue)
+    root.style.setProperty("--secondary-background-color", imagePaletteHex[1])
+    root.style.setProperty("--secondary-foreground-color", secondaryForegroundColor)
+    root.style.setProperty("--secondary-invert-value", secondaryInvertValue)
+
+    localStorage.setItem("background-image",img.src);
+    localStorage.setItem("main-background-color",imagePaletteHex[0]);
+    localStorage.setItem("main-foreground-color",mainForegroundColor);
+    localStorage.setItem("main-invert-value",mainInvertValue);
+    localStorage.setItem("secondary-background-color",imagePaletteHex[1]);
+    localStorage.setItem("secondary-foreground-color",secondaryForegroundColor);
+    localStorage.setItem("secondary-invert-value",secondaryInvertValue);
+    setCookie("styleSet","true", 10)
+
+})
+
+if (getCookie("styleSet") == "") {
+    setImageUnsplash();
+}
+
+
+
+commandButton.addEventListener("click", function () {
+    if (dropdownMenu.getAttribute("data-dropdown-visibility") == "invisible") {
+        dropdownMenu.setAttribute("data-dropdown-visibility", "visible")
+        commandDropdown.setAttribute("data-dropdown-visibility", "visible")
+    }
+    else {
+        dropdownMenu.setAttribute("data-dropdown-visibility", "invisible")
+        commandDropdown.setAttribute("data-dropdown-visibility", "invisible")
+    }
+});
+
+
+commandInput.addEventListener("keyup", function(event) {
+    switch(commandText.innerHTML){
+        case "Google":
+            console.log("A")
+            break
+        case "User":
+            console.log("AA")
+            break
+        case "Browse":
+            console.log("AAA")
+            break
+        case "Reddit":
+            console.log("AAAA")
+            break
+        case "Youtube":
+            console.log("AAAAA")
+            break
+        case "Twitch":
+            console.log("AAAAAA")
+            break
+        case "Duckduckgo":
+            console.log("AAAAAAA")
+            break
+        case "Bing":
+            console.log("AAAAAAAA")
+            break
+    }
+
+})
+
+// fetch("http://suggestqueries.google.com/complete/search?client=chrome&q=cats")
