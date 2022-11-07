@@ -5,9 +5,10 @@ let timeElement = document.getElementById("time");
 let dateElement = document.getElementById("date");
 
 let weatherIconElement = document.getElementById("weather_icon");
-let weatherTempElement = document.getElementById("weather_text")
+let weatherTempElement = document.getElementById("weather_text");
 
-let commandDropdown = document.getElementById("dropdown_menu")
+let usernameElement = document.getElementById("username");
+let commandDropdown = document.getElementById("dropdown_menu");
 let commandButton = document.getElementById("currently_selected");
 let commandText = document.getElementById("command_text");
 let commandIcon = document.getElementById("command_icon");
@@ -43,7 +44,7 @@ function setTime(uFormat = "") {
     }
     else {
         time = MilitaryTime ? moment().format("HH:mm") : moment().format("hh:mm");
-        !MilitaryTime && timePeriodEnabled ? time += " " + moment().format("A") : none;
+        time += !MilitaryTime && timePeriodEnabled ? " " + moment().format("A") : "";
     }
 
     timeElement.innerHTML = time;
@@ -80,13 +81,14 @@ function setWeather() {
     let long = localStorage.getItem("long");
 
     if (lat != null) {
-        let fetchString = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + long + "&current_weather=true&temperature_unit=fahrenheit";
+        let fetchString = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + long + "&current_weather=true";
+        fetchString += useFahrenheit ?  "&temperature_unit=fahrenheit" : "";
 
         fetch(fetchString)
             .then((response) => response.json())
             .then((data) => {
-                let temp = data["current_weather"]["temperature"]
-                let weatherCode = data["current_weather"]["weathercode"]
+                let temp = data["current_weather"]["temperature"];
+                let weatherCode = data["current_weather"]["weathercode"];
 
                 let time = new Date();
                 sun = {
@@ -127,18 +129,14 @@ function setWeather() {
                     96: "cloud-lightning.svg",
                     99: "cloud-lightning.svg",
                 };
-
-                if (time.getHours() > 7 && time.getHours() < 19) {
-                    var codeToIconPath = Object.assign({}, sun, otherWeatherCodes);
-                }
-                else {
-                    var codeToIconPath = Object.assign({}, moon, otherWeatherCodes);
-                }
-
+                
+                let codeToIconPath = (time.getHours() > 7 && time.getHours() < 19) ? Object.assign({}, sun, otherWeatherCodes) : Object.assign({}, moon, otherWeatherCodes);
                 let icon = codeToIconPath[weatherCode];
                 weatherIconElement.src = "./weather icons/" + icon;
 
-                weatherTempElement.innerHTML = Math.floor(temp) + "°F";
+                let retString = Math.floor(temp) + "°";
+                retString += useFahrenheit ? "F": "C";
+                weatherTempElement.innerHTML = retString;
 
             })
     }
@@ -146,10 +144,10 @@ function setWeather() {
 
 // Make Dropdown Functional
 function setDropdown() {
-    let dropdownValues = ["google", "user", "browse", "reddit", "youtube", "twitch", "duckduckgo", "bing"];
+    let dropdownValues = ["google", "command", "browse", "reddit", "youtube", "twitch", "duckduckgo", "bing"];
     let dropdownValuesWithIcons = {
         "google": "search.svg",
-        "user": "arrow-right.svg",
+        "command": "arrow-right.svg",
         "browse": "globe.svg",
         "reddit": "user.svg",
         "youtube": "tv.svg",
@@ -237,6 +235,13 @@ function setBookmarks() {
     }
 }
 
+// Username
+function setUsername(){
+    if (localStorage.getItem("username") != null){
+        usernameElement.innerHTML = localStorage.getItem("username") + "@";
+    
+    }
+}
 // ==============================================
 // Command Functions
 // ==============================================
@@ -247,18 +252,32 @@ function googleCommand(q) {
 }
 
 function userCommand(s){
-    function username(s){}
-    function backup(){}
-    function restore(){}
-    function gmail(s){}
-    function gdrive(s){}
+    function username(s){
+        // localstorage username
+        localStorage.setItem("username", s)
+        setUsername();
+    }
+    function gmail(s){
+        // if s is num then use one link
+        // else use normal link
+    }
+    function gdrive(s){
+        // if s is num then use one link
+        // else use normal link
+    }
 }
+
 function browseCommand(s){
+    s = s.includes("https://") || s.includes("http://") ? s : "https://" + s;
+    s = s.includes('.') ? s : s + ".com";
+    url = s;
+    window.open(url);
     // get string
     // if missing https or http, then add it
     // if missing a dot, then add .com
     // run it
 }
+
 function redditCommand(s){
     // get string
     // split it into each word
@@ -266,7 +285,14 @@ function redditCommand(s){
     // else if split[0] equals u
     // else search
 }
-function youtubeCommand(s){}
+
+function youtubeCommand(s){
+    // get string
+    // split 
+    // if split[0] == c
+    // else search
+}
+
 function twitchCommand(s){
     // get string
     // split
@@ -275,8 +301,11 @@ function twitchCommand(s){
     // c = channel
     // else search
 }
+
 function duckduckgoCommand(s){}
+
 function bingCommand(s){}
+
 // ==============================================
 // Main
 // ==============================================
@@ -294,6 +323,7 @@ setTimeout(() => {
 
 setDropdown()
 setBookmarks()
+setUsername()
 
 const colorThief = new ColorThief();
 const img = new Image();
@@ -372,17 +402,21 @@ commandButton.addEventListener("click", function () {
 let suggestions;
 let suggestionIndex = 0;
 commandInput.addEventListener("keyup", function (event) {
-    val = commandInput.value;
-    val.num
-    console.log("Value: " + val)
+    function clearInput(){
+        commandInput.value = "";
+        suggestionElement.innerHTML = "";
+        suggestions = undefined;
+        suggestionIndex = 0;
+    }
 
+    val = commandInput.value;
+    console.log(event.key)
     if ((event.key === "Tab" || event.key === "Control") && suggestionElement.innerHTML != "") {
         event.preventDefault();
         commandInput.value = suggestionElement.innerHTML;
     }
-    else if (event.key === "Backspace" && suggestionElement.innerHTML != "") {
-        suggestionElement.innerHTML = "";
-        val = "";
+    else if (event.key === "Backspace" && commandInput.value == "") {
+        clearInput()
     }
     else if (event.key === "ArrowUp" && suggestions != undefined) {
         if (suggestionIndex < suggestions.length - 1) {
@@ -408,8 +442,50 @@ commandInput.addEventListener("keyup", function (event) {
         switch (commandText.innerHTML) {
             case "Google":
                 googleCommand(val);
+                clearInput();
                 break
-            case "User":
+            case "Command":
+                clearInput();
+                break
+            case "Browse":
+                browseCommand(val);
+                clearInput();
+                break
+            case "Reddit":
+                clearInput();
+                break
+            case "Youtube":
+                clearInput();
+                break
+            case "Twitch":
+                clearInput();
+                break
+            case "Duckduckgo":
+                clearInput();
+                break
+            case "Bing":
+                clearInput();
+                break
+        }
+    }
+
+    else {
+        switch (commandText.innerHTML) {
+            case "Google":
+                fetch("https://corsanywhere.herokuapp.com/http://suggestqueries.google.com/complete/search?client=chrome&q=" + val)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (JSON.stringify(suggestions) != JSON.stringify(data[1])) {
+                            suggestions = data[1];
+                            if (suggestions[0] != undefined && val != "") {
+                                suggestionIndex = 0;
+                                suggestionElement.innerHTML = suggestions[suggestionIndex];
+                            }
+                        }
+                    })
+    
+                break
+            case "Command":
                 break
             case "Browse":
                 break
@@ -425,40 +501,6 @@ commandInput.addEventListener("keyup", function (event) {
                 break
         }
     }
-    else {
-        console.log("key: " + event.key)
-    }
 
-    switch (commandText.innerHTML) {
-        case "Google":
-            fetch("https://corsanywhere.herokuapp.com/http://suggestqueries.google.com/complete/search?client=chrome&q=" + val)
-                .then((response) => response.json())
-                .then((data) => {
-                    if (JSON.stringify(suggestions) != JSON.stringify(data[1])) {
-                        console.log(suggestions)
-                        console.log(data[1])
-                        suggestions = data[1];
-                        if (suggestions[0] != undefined && val != "") {
-                            suggestionIndex = 0;
-                            suggestionElement.innerHTML = suggestions[suggestionIndex];
-                        }
-                    }
-                })
 
-            break
-        case "User":
-            break
-        case "Browse":
-            break
-        case "Reddit":
-            break
-        case "Youtube":
-            break
-        case "Twitch":
-            break
-        case "Duckduckgo":
-            break
-        case "Bing":
-            break
-    }
 })

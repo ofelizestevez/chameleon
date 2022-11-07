@@ -89,7 +89,6 @@ body {
 .currently_selected{
     display: flex;
     align-items: center;
-    gap: 8px;
 }
 
 .currently_selected:hover {
@@ -139,6 +138,10 @@ body {
     width: 30ch;
     overflow: scroll;
     /* z-index: 1; */
+}
+
+#command_text {
+    margin-right: 8px;
 }
 
 .suggestion_text {

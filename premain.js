@@ -6,10 +6,16 @@ let MilitaryTime = false;
 let timeEnabled = true;
 
 let dateEnabled = true;
+
 let weatherEnabled = true;
 let weatherIconEnabled = true;
+let useFahrenheit = true;
+
 let useDefaultTheme = false;
 
+let useNewTab = false;
+
+// Main
 const root = document.querySelector(':root');
 
 function setCookie(cname, cvalue, exmins) {
