@@ -320,24 +320,25 @@ function userCommand(s){
         // youtube "yt" "youtube"
         case "yt":
         case "youtube":
+            youtubeCommand(commandString.slice(1).join(" "));
             break;
             
         // twitch "ttv" "twitch"
         case "ttv":
         case "twitch":
-            redditCommand(commandString.slice(1).join(" "));
+            twitchCommand(commandString.slice(1).join(" "));
             break;
             
         // duckduckgo "ddg" "duckduckgo"
         case "ddg":
         case "duckduckgo":
-            redditCommand(commandString.slice(1).join(" "));
+            duckduckgoCommand(commandString.slice(1).join(" "));
             break;
             
         // bing "b" "bing"
         case "b":
         case "bing":
-            redditCommand(commandString.slice(1).join(" "));
+            bingCommand(commandString.slice(1).join(" "));
             break;
     }
 }
