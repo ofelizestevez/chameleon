@@ -135,7 +135,7 @@ body {
 .command_input, input::placeholder{
     all: unset;
     color: var(--main-foreground-color);
-    width: 30ch;
+    width: 20ch;
     overflow: scroll;
     /* z-index: 1; */
 }

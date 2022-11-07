@@ -253,17 +253,89 @@ function googleCommand(q) {
 
 function userCommand(s){
     function username(s){
-        // localstorage username
         localStorage.setItem("username", s)
         setUsername();
     }
     function gmail(s){
-        // if s is num then use one link
-        // else use normal link
+        if(!isNaN(s)){
+            url = "https://mail.google.com/mail/u/" + s + "/#inbox";
+        }
+        else {
+            url = "https://mail.google.com/";
+        }
+        
+        window.open(url);
     }
     function gdrive(s){
-        // if s is num then use one link
-        // else use normal link
+        if(!isNaN(s)){
+            url = "https://drive.google.com/drive/u/" + s + "/my-drive";
+        }
+        else {
+            url = "https://drive.google.com/";
+        }
+        
+        window.open(url);
+    }
+    let commandString = s.split(" ");
+    console.log(commandString);
+    switch(commandString[0]){
+        // username
+        case "u":
+        case "user":
+        case "username":
+            username(commandString[1]);
+            break;
+
+        // gmail "gm" "gmail"
+        case "gm":
+        case "gmail":
+            gmail(commandString[1]);
+            break
+
+        // gdrive "gd" "gdrive" "drive"
+        case "gd":
+        case "drive":
+        case "gdrive":
+            gdrive(commandString[1]);
+            break;
+
+        // google "g" "google"
+        case "g":
+        case "google":
+            googleCommand(commandString.slice(1).join(" "));
+            break;
+            
+        // browse "b" "browse"
+        case "b":
+        case "browse":
+            browseCommand(commandString[1])
+            break;
+            
+        // reddit "r" "reddit"
+        case "r":
+        case "reddit":
+            break;
+            
+        // youtube "yt" "youtube"
+        case "yt":
+        case "youtube":
+            break;
+            
+        // twitch "ttv" "twitch"
+        case "ttv":
+        case "twitch":
+            break;
+            
+        // duckduckgo "ddg" "duckduckgo"
+        case "ddg":
+        case "duckduckgo":
+            break;
+            
+        // bing "b" "bing"
+        case "b":
+        case "bing":
+            break;
+            
     }
 }
 
@@ -272,10 +344,6 @@ function browseCommand(s){
     s = s.includes('.') ? s : s + ".com";
     url = s;
     window.open(url);
-    // get string
-    // if missing https or http, then add it
-    // if missing a dot, then add .com
-    // run it
 }
 
 function redditCommand(s){
@@ -410,7 +478,6 @@ commandInput.addEventListener("keyup", function (event) {
     }
 
     val = commandInput.value;
-    console.log(event.key)
     if ((event.key === "Tab" || event.key === "Control") && suggestionElement.innerHTML != "") {
         event.preventDefault();
         commandInput.value = suggestionElement.innerHTML;
@@ -445,6 +512,7 @@ commandInput.addEventListener("keyup", function (event) {
                 clearInput();
                 break
             case "Command":
+                userCommand(val);
                 clearInput();
                 break
             case "Browse":
@@ -452,18 +520,23 @@ commandInput.addEventListener("keyup", function (event) {
                 clearInput();
                 break
             case "Reddit":
+                redditCommand(val);
                 clearInput();
                 break
             case "Youtube":
+                youtubeCommand(val);
                 clearInput();
                 break
             case "Twitch":
+                twitchCommand(val);
                 clearInput();
                 break
             case "Duckduckgo":
+                duckduckgoCommand(val);
                 clearInput();
                 break
             case "Bing":
+                bingCommand(val);
                 clearInput();
                 break
         }
