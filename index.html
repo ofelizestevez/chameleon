@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple-ish Startpage</title>
     <link rel="stylesheet" href="style.css">
-    
+    <script src="moment.js"></script>
     <script src="premain.js"></script>
 </head>
 
 <body>
-    <div class="main">
+    <div class="main" id="main">
         <div class="image" id="image"></div>
         <div class="content">
             <div class="main_content">
@@ -29,8 +29,12 @@
                                 </ul>
                             </div>
                         </div>
-                        <input type="text" placeholder="Type Here" name="command_input" id="command_input"
-                            class="command_input">
+                        <div class="input_wrapper">
+                            <input type="text" placeholder="Type Here" name="command_input" id="command_input"
+                                class="command_input">
+                            <p class="suggestion_text" id="suggestion_text"></p>
+                        </div>
+
                     </div>
                     <div class="info">
                         <p class="time" id="time">XX:XX XX</p>

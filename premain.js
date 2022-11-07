@@ -1,3 +1,15 @@
+// ==============================================
+// Useful Variables (For Settings)
+// ==============================================
+let timePeriodEnabled = true;
+let MilitaryTime = false;
+let timeEnabled = true;
+
+let dateEnabled = true;
+let weatherEnabled = true;
+let weatherIconEnabled = true;
+let useDefaultTheme = false;
+
 const root = document.querySelector(':root');
 
 function setCookie(cname, cvalue, exmins) {
@@ -30,10 +42,9 @@ if (localStorage.getItem("currentCommand") == null) {
 if (localStorage.getItem("bookmarks") == null) {
     let defaultBookmarks = {
         "General": {
-            "Google": "https://www.google.com",
             "Gmail": "https://mail.google.com",
             "Gdrive": "https://drive.google.com",
-            "Calendar": "https://drive.google.com",
+            "Calendar": "https://calendar.google.com",
         },
         "Entertainment": {
             "Youtube": "https://www.youtube.com",
@@ -56,7 +67,6 @@ if (localStorage.getItem("bookmarks") == null) {
 }
 
 if (getCookie("styleSet") != "") {
-    console.log(localStorage.getItem("secondary-invert-value"))
     root.style.setProperty("--background-image", 'url("' + localStorage.getItem("background-image") + '")')
     root.style.setProperty("--main-background-color", localStorage.getItem("main-background-color"))
     root.style.setProperty("--main-foreground-color", localStorage.getItem("main-foreground-color"))
@@ -64,4 +74,6 @@ if (getCookie("styleSet") != "") {
     root.style.setProperty("--secondary-background-color", localStorage.getItem("secondary-background-color"))
     root.style.setProperty("--secondary-foreground-color", localStorage.getItem("secondary-foreground-color"))
     root.style.setProperty("--secondary-invert-value", localStorage.getItem("secondary-invert-value"))
+    root.style.setProperty("--suggestion-color", localStorage.getItem("suggestion-color"))
+
 }

@@ -9,6 +9,7 @@
     --secondary-foreground-color: #000000;
     --secondary-invert-value: 0%;
     
+    --suggestion-color: #FFFFFF4D;
     --background-image: url("bg.jpg");
     --font-family: 'Montserrat', sans-serif;
 
@@ -127,11 +128,26 @@ body {
 .dropdown_menu li:last-child {
     margin-bottom: 0px;
 }
+
+.input_wrapper {
+    position: relative;
+}
+
 .command_input, input::placeholder{
     all: unset;
     color: var(--main-foreground-color);
     width: 30ch;
     overflow: scroll;
+    /* z-index: 1; */
+}
+
+.suggestion_text {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    color: var(--suggestion-color);
+    padding: calc((35px - 19px) / 2) 0;
+    /* z-index: 2; */
 }
 
 .info {
