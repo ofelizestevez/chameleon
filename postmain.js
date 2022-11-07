@@ -352,6 +352,9 @@ function redditCommand(s){
     // if split [0] equals r
     // else if split[0] equals u
     // else search
+    q = encodeURIComponent(s)
+    url = 'https://www.reddit.com/search/?q=' + q;
+    window.open(url);
 }
 
 function youtubeCommand(s){
@@ -359,6 +362,9 @@ function youtubeCommand(s){
     // split 
     // if split[0] == c
     // else search
+    q = encodeURIComponent(s)
+    url = 'https://www.youtube.com/results?search_query=' + q;
+    window.open(url);
 }
 
 function twitchCommand(s){
@@ -368,11 +374,22 @@ function twitchCommand(s){
     // d = directory
     // c = channel
     // else search
+    q = encodeURIComponent(s)
+    url = 'https://www.twitch.tv/search?term=' + q;
+    window.open(url);
 }
 
-function duckduckgoCommand(s){}
+function duckduckgoCommand(s){
+    q = encodeURIComponent(s)
+    url = 'https://duckduckgo.com/?q=' + q;
+    window.open(url);
+}
 
-function bingCommand(s){}
+function bingCommand(s){
+    q = encodeURIComponent(s)
+    url = 'https://www.bing.com/search?q=' + q;
+    window.open(url);
+}
 
 // ==============================================
 // Main
