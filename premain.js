@@ -14,10 +14,11 @@ let useFahrenheit = true;
 let useDefaultTheme = false;
 
 let useNewTab = false;
+// ==============================================
 
-// Main
-const root = document.querySelector(':root');
-
+// ==============================================
+// Cookie Functions
+// ==============================================
 function setCookie(cname, cvalue, exmins) {
     const d = new Date();
     d.setTime(d.getTime() + (exmins * 60 * 1000));
@@ -40,11 +41,16 @@ function getCookie(cname) {
     }
     return "";
 }
+// ==============================================
 
+const root = document.querySelector(':root');
+
+// Sets default command
 if (localStorage.getItem("currentCommand") == null) {
     localStorage.setItem("currentCommand", "google");
 }
 
+// Sets default bookmarks
 if (localStorage.getItem("bookmarks") == null) {
     let defaultBookmarks = {
         "General": {
@@ -69,9 +75,9 @@ if (localStorage.getItem("bookmarks") == null) {
     }
 
     localStorage.setItem("bookmarks", JSON.stringify(defaultBookmarks))
-
 }
 
+// Sets the style from the random image
 if (getCookie("styleSet") != "") {
     root.style.setProperty("--background-image", 'url("' + localStorage.getItem("background-image") + '")')
     root.style.setProperty("--main-background-color", localStorage.getItem("main-background-color"))
@@ -81,5 +87,4 @@ if (getCookie("styleSet") != "") {
     root.style.setProperty("--secondary-foreground-color", localStorage.getItem("secondary-foreground-color"))
     root.style.setProperty("--secondary-invert-value", localStorage.getItem("secondary-invert-value"))
     root.style.setProperty("--suggestion-color", localStorage.getItem("suggestion-color"))
-
 }

@@ -9,390 +9,274 @@ let weatherTempElement = document.getElementById("weather_text");
 
 let usernameElement = document.getElementById("username");
 let commandDropdown = document.getElementById("dropdown_menu");
-let commandButton = document.getElementById("currently_selected");
+let dropdownButton = document.getElementById("currently_selected");
 let commandText = document.getElementById("command_text");
 let commandIcon = document.getElementById("command_icon");
 let commandInput = document.getElementById("command_input");
 let suggestionElement = document.getElementById("suggestion_text");
 
 let dropdownMenu = document.getElementById("command_dropdown");
-let dropdownValuesElement = document.getElementById("dropdown_values");
+let dropdownElement = document.getElementById("dropdown_values");
 
 let bookmarkElement = document.getElementById("bookmarks");
-
 let imageElement = document.getElementById("image");
 
+let mainContentSection = document.getElementById("main_content");
+let settingsButton = document.getElementById("settings_icon");
+let settingsSection = document.getElementById("settings");
+
+let settingsNavHowTo = document.getElementById("settings_how_to");
+let settingsNavLinks = document.getElementById("settings_links");
+let settingsNavGeneral = document.getElementById("settings_general");
+let settingsNavClose = document.getElementById("settings_close");
+
+let settingsLinksSection = document.getElementById("links_section");
 // ==============================================
 // Useful Functions
 // ==============================================
 
 // RGB to Hex
-function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-}
-
 function rgbToHex(r, g, b) {
-    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+	function componentToHex(c) {
+		var hex = c.toString(16);
+		return hex.length == 1 ? "0" + hex : hex;
+	}
+	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
 // Change Time
-function setTime(uFormat = "") {
-    let time;
-    if(uFormat != ""){
-        time = moment().format(uFormat);
-    }
-    else {
-        time = MilitaryTime ? moment().format("HH:mm") : moment().format("hh:mm");
-        time += !MilitaryTime && timePeriodEnabled ? " " + moment().format("A") : "";
-    }
+function setTime(userFormat = "") {
+	let time;
 
-    timeElement.innerHTML = time;
+	if (userFormat != "") {
+		time = moment().format(userFormat);
+	} else {
+		time = MilitaryTime ? moment().format("HH:mm") : moment().format("hh:mm");
+		time +=
+			!MilitaryTime && timePeriodEnabled ? " " + moment().format("A") : "";
+	}
+
+	timeElement.innerHTML = time;
 }
 
 // Change Date
-function setDate(uFormat = "") {
-    let retString;
-    if (uFormat != ""){
-        retString = moment().format(uFormat);
-    }
-    else {
-        retString = moment().format("MMM D");
-    }
+function setDate(userFormat = "") {
+	let dateString;
+	
+	if (userFormat != "") {
+		dateString = moment().format(userFormat);
+	} else {
+		dateString = moment().format("MMM D");
+	}
 
-    dateElement.innerHTML = retString;
+	dateElement.innerHTML = dateString;
 }
 
 // Change Weather
 function setWeather() {
-    function success(position) {
-        const lat = position.coords.latitude;
-        const long = position.coords.longitude;
+	function success(position) {
+		const lat = position.coords.latitude;
+		const long = position.coords.longitude;
 
-        localStorage.setItem("lat", lat);
-        localStorage.setItem("long", long);
-    }
+		localStorage.setItem("lat", lat);
+		localStorage.setItem("long", long);
+	}
 
-    if (navigator.geolocation && localStorage.getItem("lat") == null) {
-        let location = navigator.geolocation.getCurrentPosition(success);
-    }
+	if (navigator.geolocation && localStorage.getItem("lat") == null) {
+		let location = navigator.geolocation.getCurrentPosition(success);
+	}
 
-    let lat = localStorage.getItem("lat");
-    let long = localStorage.getItem("long");
+	let lat = localStorage.getItem("lat");
+	let long = localStorage.getItem("long");
 
-    if (lat != null) {
-        let fetchString = "https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + long + "&current_weather=true";
-        fetchString += useFahrenheit ?  "&temperature_unit=fahrenheit" : "";
+	if (lat != null) {
+		let fetchString =
+			"https://api.open-meteo.com/v1/forecast?latitude=" +
+			lat +
+			"&longitude=" +
+			long +
+			"&current_weather=true";
+		fetchString += useFahrenheit ? "&temperature_unit=fahrenheit" : "";
 
-        fetch(fetchString)
-            .then((response) => response.json())
-            .then((data) => {
-                let temp = data["current_weather"]["temperature"];
-                let weatherCode = data["current_weather"]["weathercode"];
+		fetch(fetchString)
+			.then((response) => response.json())
+			.then((data) => {
+				let temp = data["current_weather"]["temperature"];
+				let weatherCode = data["current_weather"]["weathercode"];
 
-                let time = new Date();
-                sun = {
-                    0: "sun.svg",
-                    1: "cloud-sun.svg",
-                    2: "cloud-sun.svg",
-                    3: "cloud-sun.svg",
-                };
-                moon = {
-                    0: "moon.svg",
-                    1: "cloud-moon.svg",
-                    2: "cloud-moon.svg",
-                    3: "cloud-moon.svg",
-                };
-                otherWeatherCodes = {
-                    45: "cloud-fog.svg",
-                    48: "cloud-fog.svg",
-                    51: "cloud-drizzle.svg",
-                    53: "cloud-drizzle.svg",
-                    55: "cloud-drizzle.svg",
-                    56: "cloud-drizzle.svg",
-                    57: "cloud-drizzle.svg",
-                    61: "cloud-rain.svg",
-                    63: "cloud-rain.svg",
-                    65: "cloud-rain.svg",
-                    66: "cloud-rain.svg",
-                    67: "cloud-rain.svg",
-                    71: "cloud-snow.svg",
-                    73: "cloud-snow.svg",
-                    75: "cloud-snow.svg",
-                    77: "cloud-snow.svg",
-                    80: "cloud-rain.svg",
-                    81: "cloud-rain.svg",
-                    82: "cloud-rain.svg",
-                    85: "cloud-snow.svg",
-                    86: "cloud-snow.svg",
-                    95: "cloud-lightning.svg",
-                    96: "cloud-lightning.svg",
-                    99: "cloud-lightning.svg",
-                };
-                
-                let codeToIconPath = (time.getHours() > 7 && time.getHours() < 19) ? Object.assign({}, sun, otherWeatherCodes) : Object.assign({}, moon, otherWeatherCodes);
-                let icon = codeToIconPath[weatherCode];
-                weatherIconElement.src = "./weather icons/" + icon;
+				let time = new Date();
+				sun = {
+					0: "sun.svg",
+					1: "cloud-sun.svg",
+					2: "cloud-sun.svg",
+					3: "cloud-sun.svg",
+				};
+				moon = {
+					0: "moon.svg",
+					1: "cloud-moon.svg",
+					2: "cloud-moon.svg",
+					3: "cloud-moon.svg",
+				};
+				otherWeatherCodes = {
+					45: "cloud-fog.svg",
+					48: "cloud-fog.svg",
+					51: "cloud-drizzle.svg",
+					53: "cloud-drizzle.svg",
+					55: "cloud-drizzle.svg",
+					56: "cloud-drizzle.svg",
+					57: "cloud-drizzle.svg",
+					61: "cloud-rain.svg",
+					63: "cloud-rain.svg",
+					65: "cloud-rain.svg",
+					66: "cloud-rain.svg",
+					67: "cloud-rain.svg",
+					71: "cloud-snow.svg",
+					73: "cloud-snow.svg",
+					75: "cloud-snow.svg",
+					77: "cloud-snow.svg",
+					80: "cloud-rain.svg",
+					81: "cloud-rain.svg",
+					82: "cloud-rain.svg",
+					85: "cloud-snow.svg",
+					86: "cloud-snow.svg",
+					95: "cloud-lightning.svg",
+					96: "cloud-lightning.svg",
+					99: "cloud-lightning.svg",
+				};
 
-                let retString = Math.floor(temp) + "°";
-                retString += useFahrenheit ? "F": "C";
-                weatherTempElement.innerHTML = retString;
+				let codeToIconPath =
+					time.getHours() > 7 && time.getHours() < 19
+						? Object.assign({}, sun, otherWeatherCodes)
+						: Object.assign({}, moon, otherWeatherCodes);
+				let icon = codeToIconPath[weatherCode];
+				weatherIconElement.src = "./weather icons/" + icon;
 
-            })
-    }
+				let weatherString = Math.floor(temp) + "°";
+				weatherString += useFahrenheit ? "F" : "C";
+				weatherTempElement.innerHTML = weatherString;
+			});
+	}
 }
 
 // Make Dropdown Functional
 function setDropdown() {
-    let dropdownValues = ["google", "command", "browse", "reddit", "youtube", "twitch", "duckduckgo", "bing"];
-    let dropdownValuesWithIcons = {
-        "google": "search.svg",
-        "command": "arrow-right.svg",
-        "browse": "globe.svg",
-        "reddit": "user.svg",
-        "youtube": "tv.svg",
-        "twitch": "youtube.svg",
-        "duckduckgo": "search.svg",
-        "bing": "search.svg"
-    }
+	let dropdownValues = {
+		"google" : "search.svg",
+		"command" : "arrow-right.svg",
+		"browse" : "globe.svg",
+		"reddit" : "user.svg",
+		"youtube" : "tv.svg",
+		"twitch" : "youtube.svg",
+		"duckduckgo" : "search.svg",
+		"bing" : "search.svg",
+	};
+	
+	let currently_selected = localStorage.getItem("currentCommand");
+	commandText.innerHTML =
+		currently_selected.charAt(0).toLocaleUpperCase() +
+		currently_selected.slice(1);
+	
+	commandIcon.src = "./icons/" + dropdownValues[currently_selected];
 
-    let currently_selected = localStorage.getItem("currentCommand");
-    commandText.innerHTML = currently_selected.charAt(0).toLocaleUpperCase() + currently_selected.slice(1);
-    commandIcon.src = "./icons/" + dropdownValuesWithIcons[currently_selected];
+	for (let dropdownPair of Object.entries(dropdownValues)) {
+		let dropdownValue = dropdownPair[0];
+		let dropdownIconSrc = dropdownPair[1];
 
-    for (let dropdownValue of dropdownValues) {
-        if (dropdownValue.toLocaleLowerCase() != currently_selected.toLocaleLowerCase()) {
-            let dropdownElement = document.createElement("li");
-            let dropdownElementText = document.createElement("p");
-            let dropdownIcon = document.createElement("img");
+		// If dropdown value isn't currently selected, then add them to the menu
+		if (
+			dropdownValue.toLocaleLowerCase() !=
+			currently_selected.toLocaleLowerCase()
+		) {
+			// Makes elements that will be used
+			let dropdownWrapper = document.createElement("li");
+			let dropdownTextElement = document.createElement("p");
+			let dropdownIcon = document.createElement("img");
 
-            dropdownElement.classList.add("dropdown_option");
-            dropdownElementText.innerHTML = dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
-            dropdownIcon.classList.add("command_icon");
-            dropdownIcon.src = "./icons/" + dropdownValuesWithIcons[dropdownValue];
+			// Append class names
+			dropdownWrapper.classList.add("dropdown_option");
+			dropdownIcon.classList.add("command_icon");
 
-            dropdownElement.appendChild(dropdownElementText);
-            dropdownElement.appendChild(dropdownIcon);
+			// Edit Content
+			dropdownTextElement.innerHTML =
+				dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
+			dropdownIcon.src = "./icons/" + dropdownIconSrc;
 
-            dropdownElement.addEventListener("click", function () {
-                dropdownMenu.setAttribute("data-dropdown-visibility", "invisible");
-                commandDropdown.setAttribute("data-dropdown-visibility", "invisible");
+			// Add JS Magic
+			dropdownWrapper.addEventListener("click", function () {
+				// This is used for the css values
+				dropdownMenu.setAttribute("data-dropdown-active", "false");
+				commandDropdown.setAttribute("data-dropdown-active", "false");
 
-                commandText.innerHTML = dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
-                commandIcon.src = "./icons/" + dropdownValuesWithIcons[dropdownValue];
-                dropdownValuesElement.innerHTML = "";
-                localStorage.setItem("currentCommand", dropdownValue);
-                setDropdown();
-            })
-            dropdownValuesElement.appendChild(dropdownElement);
-        }
-    }
+				// Sets new command and reruns function
+				localStorage.setItem("currentCommand", dropdownValue);
+				setDropdown();
+			});
+			
+			// Append Content
+			dropdownWrapper.appendChild(dropdownTextElement);
+			dropdownWrapper.appendChild(dropdownIcon);
+			dropdownElement.appendChild(dropdownWrapper);
+		}
+	}
 }
 
 // Change Image + Colors
 function setImageUnsplash() {
-    // Get Random Image From Unsplash
-    fetch("https://source.unsplash.com/random/")
-        .then((response) => {
-            let url = response.url;
-            img.crossOrigin = "Anonymous";
-            img.src = url;
-        })
+	// Get Random Image From Unsplash
+	fetch("https://source.unsplash.com/random/").then((response) => {
+		let url = response.url;
+		img.crossOrigin = "Anonymous";
+		img.src = url;
+	});
 }
 
 // Bookmarks
 function setBookmarks() {
-    let bookmarks = JSON.parse(localStorage.getItem("bookmarks"))
+	let bookmarks = JSON.parse(localStorage.getItem("bookmarks"));
 
-    for (let column of Object.entries(bookmarks)) {
-        let columnTitle = column[0];
-        let columnLinks = column[1];
+	// Bookmarks is a dictionary made up of dictionaries
+	for (let column of Object.entries(bookmarks)) {
+		let columnTitle = column[0];
+		let columnLinks = column[1];
 
-        let columnTitleElement = document.createElement("h1");
-        let columnWrapper = document.createElement("div");
-        let columnLinkWrapper = document.createElement("ul");
+		// create elements being used
+		let columnHeader = document.createElement("h1");
+		let columnWrapper = document.createElement("div");
+		let columnLinkWrapper = document.createElement("ul");
 
-        columnWrapper.classList.add("column");
-        columnTitleElement.classList.add("title");
-        columnLinkWrapper.classList.add("links");
+		// adds classes to to classnames
+		columnWrapper.classList.add("column");
+		columnHeader.classList.add("title");
+		columnLinkWrapper.classList.add("links");
 
-        columnTitleElement.innerHTML = columnTitle;
-        for (let link of Object.entries(columnLinks)) {
-            let linkElement = document.createElement("li");
-            let linkChildElement = document.createElement("a");
+		// Adds Content
+		columnHeader.innerHTML = columnTitle;
+		// Goes through all column links (column[1] is a dict)
+		for (let link of Object.entries(columnLinks)) {
+			// Creates elements
+			let linkElement = document.createElement("li");
+			let linkChildElement = document.createElement("a");
 
-            linkChildElement.innerHTML = link[0];
-            linkChildElement.href = link[1];
+			// Adds Content
+			linkChildElement.innerHTML = link[0];
+			linkChildElement.href = link[1];
+			// Append
+			linkElement.appendChild(linkChildElement);
+			columnLinkWrapper.appendChild(linkElement);
+		}
 
-            linkElement.appendChild(linkChildElement);
-            columnLinkWrapper.appendChild(linkElement);
-        }
-
-        columnWrapper.appendChild(columnTitleElement);
-        columnWrapper.appendChild(columnLinkWrapper);
-
-        bookmarkElement.appendChild(columnWrapper);
-    }
+		// Append everything
+		columnWrapper.appendChild(columnHeader);
+		columnWrapper.appendChild(columnLinkWrapper);
+		bookmarkElement.appendChild(columnWrapper);
+	}
 }
 
 // Username
-function setUsername(){
-    if (localStorage.getItem("username") != null){
-        usernameElement.innerHTML = localStorage.getItem("username") + "@";
-    
-    }
-}
-// ==============================================
-// Command Functions
-// ==============================================
-function googleCommand(q) {
-    q = encodeURIComponent(q)
-    url = 'http://www.google.com/search?q=' + q;
-    window.open(url);
-}
-
-function userCommand(s){
-    function username(s){
-        localStorage.setItem("username", s)
-        setUsername();
-    }
-    function gmail(s){
-        if(!isNaN(s)){
-            url = "https://mail.google.com/mail/u/" + s + "/#inbox";
-        }
-        else {
-            url = "https://mail.google.com/";
-        }
-        
-        window.open(url);
-    }
-    function gdrive(s){
-        if(!isNaN(s)){
-            url = "https://drive.google.com/drive/u/" + s + "/my-drive";
-        }
-        else {
-            url = "https://drive.google.com/";
-        }
-        
-        window.open(url);
-    }
-    let commandString = s.split(" ");
-    console.log(commandString);
-    switch(commandString[0]){
-        // username
-        case "u":
-        case "user":
-        case "username":
-            username(commandString[1]);
-            break;
-
-        // gmail "gm" "gmail"
-        case "gm":
-        case "gmail":
-            gmail(commandString[1]);
-            break
-
-        // gdrive "gd" "gdrive" "drive"
-        case "gd":
-        case "drive":
-        case "gdrive":
-            gdrive(commandString[1]);
-            break;
-
-        // google "g" "google"
-        case "g":
-        case "google":
-            googleCommand(commandString.slice(1).join(" "));
-            break;
-            
-        // browse "b" "browse"
-        case "b":
-        case "browse":
-            browseCommand(commandString[1]);
-            break;
-            
-        // reddit "r" "reddit"
-        case "r":
-        case "reddit":
-            redditCommand(commandString.slice(1).join(" "));
-            break;
-            
-        // youtube "yt" "youtube"
-        case "yt":
-        case "youtube":
-            youtubeCommand(commandString.slice(1).join(" "));
-            break;
-            
-        // twitch "ttv" "twitch"
-        case "ttv":
-        case "twitch":
-            twitchCommand(commandString.slice(1).join(" "));
-            break;
-            
-        // duckduckgo "ddg" "duckduckgo"
-        case "ddg":
-        case "duckduckgo":
-            duckduckgoCommand(commandString.slice(1).join(" "));
-            break;
-            
-        // bing "b" "bing"
-        case "b":
-        case "bing":
-            bingCommand(commandString.slice(1).join(" "));
-            break;
-    }
-}
-
-function browseCommand(s){
-    s = s.includes("https://") || s.includes("http://") ? s : "https://" + s;
-    s = s.includes('.') ? s : s + ".com";
-    url = s;
-    window.open(url);
-}
-
-function redditCommand(s){
-    // get string
-    // split it into each word
-    // if split [0] equals r
-    // else if split[0] equals u
-    // else search
-    q = encodeURIComponent(s)
-    url = 'https://www.reddit.com/search/?q=' + q;
-    window.open(url);
-}
-
-function youtubeCommand(s){
-    // get string
-    // split 
-    // if split[0] == c
-    // else search
-    q = encodeURIComponent(s)
-    url = 'https://www.youtube.com/results?search_query=' + q;
-    window.open(url);
-}
-
-function twitchCommand(s){
-    // get string
-    // split
-    // if split[0]
-    // d = directory
-    // c = channel
-    // else search
-    q = encodeURIComponent(s)
-    url = 'https://www.twitch.tv/search?term=' + q;
-    window.open(url);
-}
-
-function duckduckgoCommand(s){
-    q = encodeURIComponent(s)
-    url = 'https://duckduckgo.com/?q=' + q;
-    window.open(url);
-}
-
-function bingCommand(s){
-    q = encodeURIComponent(s)
-    url = 'https://www.bing.com/search?q=' + q;
-    window.open(url);
+function setUsername() {
+	if (localStorage.getItem("username") != null) {
+		usernameElement.innerHTML = localStorage.getItem("username") + "@";
+	}
 }
 
 // ==============================================
@@ -401,200 +285,122 @@ function bingCommand(s){
 let time = new Date();
 let secondsLeftInMin = 60 - time.getSeconds();
 
-setTime()
-setDate()
-setWeather()
+// Sets Time, Date, Weather
+setTime();
+setDate();
+setWeather();
 
+// Waits the amount of seconds left in the minute, then sets the interval to reset time
+// It syncs the minutes with the PC's clock.
 setTimeout(() => {
-    setTime()
-    setInterval(setTime, 60000)
+	setTime();
+	setInterval(setTime, 60000);
 }, secondsLeftInMin * 1000);
 
-setDropdown()
-setBookmarks()
-setUsername()
+setDropdown();
 
+// Adds ability to dropdown button to turn on and off the menu.
+dropdownButton.addEventListener("click", function () {
+	if (dropdownMenu.getAttribute("data-dropdown-active") == "false") {
+		dropdownMenu.setAttribute("data-dropdown-active", "true");
+		commandDropdown.setAttribute("data-dropdown-active", "true");
+	} else {
+		dropdownMenu.setAttribute("data-dropdown-active", "false");
+		commandDropdown.setAttribute("data-dropdown-active", "false");
+	}
+});
+
+setBookmarks();
+setUsername();
+
+// Starts theme process
 const colorThief = new ColorThief();
 const img = new Image();
 
+// set event listener for the image (used later)
 img.addEventListener("load", function () {
-    let imagePalette = colorThief.getPalette(img, 2)
-    let imagePaletteHex = []
-    for (let colorRGB of imagePalette) {
-        imagePaletteHex.push(rgbToHex(colorRGB[0], colorRGB[1], colorRGB[2]))
-    }
 
-    let mainForegroundColor = "";
-    let mainInvertValue = "";
-    let secondaryForegroundColor = "";
-    let secondaryInvertValue = "";
+	// Makes an image palatte from colorThief, and makes an empty array for the hex values
+	let imagePalette = colorThief.getPalette(img, 2);
+	let imagePaletteHex = [];
+	
+	// Gets hex values
+	for (let colorRGB of imagePalette) {
+		imagePaletteHex.push(rgbToHex(colorRGB[0], colorRGB[1], colorRGB[2]));
+	}
 
-    root.style.setProperty("--background-image", 'url("' + img.src + '")')
-    root.style.setProperty("--main-background-color", imagePaletteHex[0])
-    if ((0.299 * imagePalette[0][0] + 0.587 * imagePalette[0][1] + 0.114 * imagePalette[0][2]) / 255 > 0.5) {
-        mainForegroundColor = "#000000"
-        mainInvertValue = "0%"
-    }
-    else {
-        root.style.setProperty("--main-foreground-color", "#FFFFFF")
-        mainForegroundColor = "#FFFFFF"
-        mainInvertValue = "100%"
-    }
-    root.style.setProperty("--secondary-background-color", imagePaletteHex[1])
-    if ((0.299 * imagePalette[1][0] + 0.587 * imagePalette[1][1] + 0.114 * imagePalette[1][2]) / 255 > 0.5) {
-        secondaryForegroundColor = "#000000";
-        secondaryInvertValue = "0%";
-    }
-    else {
-        secondaryForegroundColor = "#FFFFFF"
-        secondaryInvertValue = "100%"
-    }
+	// Sets the values used later
+	let mainForegroundColor = "";
+	let mainInvertValue = "";
+	let secondaryForegroundColor = "";
+	let secondaryInvertValue = "";
 
-    root.style.setProperty("--background-image", 'url("' + img.src + '")')
-    root.style.setProperty("--main-background-color", imagePaletteHex[0])
-    root.style.setProperty("--main-foreground-color", mainForegroundColor)
-    root.style.setProperty("--main-invert-value", mainInvertValue)
-    root.style.setProperty("--secondary-background-color", imagePaletteHex[1])
-    root.style.setProperty("--secondary-foreground-color", secondaryForegroundColor)
-    root.style.setProperty("--secondary-invert-value", secondaryInvertValue)
-    root.style.setProperty("--suggestion-color", mainForegroundColor + "4D")
+	// PRIMARY COLORS: If else statement which decides if text and icons should be white or black
+	if (
+		(0.299 * imagePalette[0][0] +
+			0.587 * imagePalette[0][1] +
+			0.114 * imagePalette[0][2]) /
+			255 >
+		0.5
+	) {
+		mainForegroundColor = "#000000";
+		mainInvertValue = "0%";
+	} else {
+		mainForegroundColor = "#FFFFFF";
+		mainInvertValue = "100%";
+	}
+	// SECONDARY COLORS: same if else as before
+	if (
+		(0.299 * imagePalette[1][0] +
+			0.587 * imagePalette[1][1] +
+			0.114 * imagePalette[1][2]) /
+			255 >
+		0.5
+	) {
+		secondaryForegroundColor = "#000000";
+		secondaryInvertValue = "0%";
+	} else {
+		secondaryForegroundColor = "#FFFFFF";
+		secondaryInvertValue = "100%";
+	}
 
-    localStorage.setItem("background-image", img.src);
-    localStorage.setItem("main-background-color", imagePaletteHex[0]);
-    localStorage.setItem("main-foreground-color", mainForegroundColor);
-    localStorage.setItem("main-invert-value", mainInvertValue);
-    localStorage.setItem("secondary-background-color", imagePaletteHex[1]);
-    localStorage.setItem("secondary-foreground-color", secondaryForegroundColor);
-    localStorage.setItem("secondary-invert-value", secondaryInvertValue);
-    localStorage.setItem("suggestion-color", mainForegroundColor + "4D")
-    setCookie("styleSet", "true", 10)
-
-})
-
-if (getCookie("styleSet") == "") {
-    setImageUnsplash();
-}
-
-commandButton.addEventListener("click", function () {
-    if (dropdownMenu.getAttribute("data-dropdown-visibility") == "invisible") {
-        dropdownMenu.setAttribute("data-dropdown-visibility", "visible")
-        commandDropdown.setAttribute("data-dropdown-visibility", "visible")
-    }
-    else {
-        dropdownMenu.setAttribute("data-dropdown-visibility", "invisible")
-        commandDropdown.setAttribute("data-dropdown-visibility", "invisible")
-    }
+	// Sets all localstorage values, sets the styleSet cookie
+	localStorage.setItem("background-image", img.src);
+	localStorage.setItem("main-background-color", imagePaletteHex[0]);
+	localStorage.setItem("main-foreground-color", mainForegroundColor);
+	localStorage.setItem("main-invert-value", mainInvertValue);
+	localStorage.setItem("secondary-background-color", imagePaletteHex[1]);
+	localStorage.setItem("secondary-foreground-color", secondaryForegroundColor);
+	localStorage.setItem("secondary-invert-value", secondaryInvertValue);
+	localStorage.setItem("suggestion-color", mainForegroundColor + "4D");
+	setCookie("styleSet", "true", 10);
+	
+	// Reloads the window and lets premain.js handle theme changing
+	window.location.reload();
 });
 
+// This is bound to change when settings are added
+if (getCookie("styleSet") == "") {
+	setImageUnsplash();
+}
 
+settingsButton.addEventListener("click", function () {
+	if (mainContentSection.getAttribute("data-visibility") == "visible") {
+		mainContentSection.setAttribute("data-visibility", "invisible");
+		settingsSection.setAttribute("data-visibility", "visible");
+	} else {
+		mainContentSection.setAttribute("data-visibility", "visible");
+		settingsSection.setAttribute("data-visibility", "invisible");
+	}
+});
 
-let suggestions;
-let suggestionIndex = 0;
-commandInput.addEventListener("keyup", function (event) {
-    function clearInput(){
-        commandInput.value = "";
-        suggestionElement.innerHTML = "";
-        suggestions = undefined;
-        suggestionIndex = 0;
-    }
-
-    val = commandInput.value;
-    if ((event.key === "Tab" || event.key === "Control") && suggestionElement.innerHTML != "") {
-        event.preventDefault();
-        commandInput.value = suggestionElement.innerHTML;
-    }
-    else if (event.key === "Backspace" && commandInput.value == "") {
-        clearInput()
-    }
-    else if (event.key === "ArrowUp" && suggestions != undefined) {
-        if (suggestionIndex < suggestions.length - 1) {
-            suggestionIndex += 1;
-            suggestionElement.innerHTML = suggestions[suggestionIndex];
-        }
-        else {
-            suggestionIndex = 0;
-            suggestionElement.innerHTML = suggestions[suggestionIndex];
-        }
-    }
-    else if (event.key === "ArrowDown" && suggestions != undefined) {
-        if (suggestionIndex == 0) {
-            suggestionIndex = suggestions.length - 1;
-            suggestionElement.innerHTML = suggestions[suggestionIndex];
-        }
-        else {
-            suggestionIndex -= 1;
-            suggestionElement.innerHTML = suggestions[suggestionIndex];
-        }
-    }
-    else if (event.key === "Enter") {
-        switch (commandText.innerHTML) {
-            case "Google":
-                googleCommand(val);
-                clearInput();
-                break
-            case "Command":
-                userCommand(val);
-                clearInput();
-                break
-            case "Browse":
-                browseCommand(val);
-                clearInput();
-                break
-            case "Reddit":
-                redditCommand(val);
-                clearInput();
-                break
-            case "Youtube":
-                youtubeCommand(val);
-                clearInput();
-                break
-            case "Twitch":
-                twitchCommand(val);
-                clearInput();
-                break
-            case "Duckduckgo":
-                duckduckgoCommand(val);
-                clearInput();
-                break
-            case "Bing":
-                bingCommand(val);
-                clearInput();
-                break
-        }
-    }
-
-    else {
-        switch (commandText.innerHTML) {
-            case "Google":
-                fetch("https://corsanywhere.herokuapp.com/http://suggestqueries.google.com/complete/search?client=chrome&q=" + val)
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (JSON.stringify(suggestions) != JSON.stringify(data[1])) {
-                            suggestions = data[1];
-                            if (suggestions[0] != undefined && val != "") {
-                                suggestionIndex = 0;
-                                suggestionElement.innerHTML = suggestions[suggestionIndex];
-                            }
-                        }
-                    })
-    
-                break
-            case "Command":
-                break
-            case "Browse":
-                break
-            case "Reddit":
-                break
-            case "Youtube":
-                break
-            case "Twitch":
-                break
-            case "Duckduckgo":
-                break
-            case "Bing":
-                break
-        }
-    }
-
-
+settingsNavClose.addEventListener("click", function(){
+	console.log("HUH")
+	if (mainContentSection.getAttribute("data-visibility") == "invisible") {
+		mainContentSection.setAttribute("data-visibility", "visible");
+		settingsSection.setAttribute("data-visibility", "invisible");
+	} else {
+		mainContentSection.setAttribute("data-visibility", "invisible");
+		settingsSection.setAttribute("data-visibility", "visible");
+	}
 })
