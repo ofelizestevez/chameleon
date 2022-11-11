@@ -56,8 +56,8 @@ function createHeader(title, placeholder){
     // Adds content
     columnTitleElement.value = title;
     columnTitleElement.placeholder = placeholder;
-	columnToggleIcon.src = "/icons/chevron-right.svg";
-    columnRemoveIcon.src = "/icons/trash-2.svg";
+	columnToggleIcon.src = "./icons/chevron-right.svg";
+    columnRemoveIcon.src = "./icons/trash-2.svg";
 
     // Append Child
 	columnTitleWrapper.appendChild(columnTitleElement);
