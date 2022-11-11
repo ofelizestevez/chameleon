@@ -242,8 +242,6 @@ saveButton.appendChild(saveIcon)
 saveButton.appendChild(saveText)
 settingsLinksSection.appendChild(saveButton)
 
-
-// Takes the bookmarks from the localstorage and spits them out to the settings
 let bookmarks = JSON.parse(localStorage.getItem("bookmarks"));
 for (let column of Object.entries(bookmarks)) {
     let columnTitle = column[0]
@@ -251,6 +249,3 @@ for (let column of Object.entries(bookmarks)) {
 
     createBookmarkSection(columnTitle,columnLinks, "Section Title")
 }
-
-// mainContentSection.setAttribute("data-visibility", "invisible");
-// settingsSection.setAttribute("data-visibility", "visible");
