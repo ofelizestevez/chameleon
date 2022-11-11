@@ -22,11 +22,11 @@ function createBookmarkSection(title, links, placeholder) {
     let headerToggleIcon = bookmarkHeader.getElementsByClassName("toggle_icon")[0]
     headerToggleIcon.addEventListener("click", function(){
         if(bookmarkTable.getAttribute("data-visibility") == "invisible"){
-            headerToggleIcon.src = "/icons/chevron-down.svg";
+            headerToggleIcon.src = "./icons/chevron-down.svg";
             bookmarkTable.setAttribute("data-visibility","visible")
         }
         else {
-            headerToggleIcon.src = "/icons/chevron-right.svg";
+            headerToggleIcon.src = "./icons/chevron-right.svg";
             bookmarkTable.setAttribute("data-visibility","invisible");
         }
     })
