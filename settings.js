@@ -117,7 +117,14 @@ function createTable(links){
 
     // Gives functionality to add link row
     addRow.addEventListener("click", function() {
-        wrapper.insertBefore(addTableRow("", "", "Link Title", "Link Destination"), addRow);    
+        let newTableRow = addTableRow("", "", "Link Title", "Link Destination")
+        
+        // Gives functionality to row's remove icon
+        let linkRemoveIcon = newTableRow.getElementsByClassName("remove_icon")[0]
+        linkRemoveIcon.addEventListener("click", function(){
+            wrapper.removeChild(newTableRow);
+        })
+        wrapper.insertBefore(newTableRow, addRow);    
     })
     
 
