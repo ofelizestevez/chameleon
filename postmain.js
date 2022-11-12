@@ -300,11 +300,26 @@ setTimeout(() => {
 
 setDropdown();
 
+
+
 // Adds ability to dropdown button to turn on and off the menu.
 dropdownButton.addEventListener("click", function () {
+	function closeDropdown(){
+		if (dropdownMenu.getAttribute("data-dropdown-active") == "true") {
+			dropdownMenu.setAttribute("data-dropdown-active", "false");
+			commandDropdown.setAttribute("data-dropdown-active", "false");
+		}
+		window.removeEventListener("click", closeDropdown);
+	}
+
 	if (dropdownMenu.getAttribute("data-dropdown-active") == "false") {
 		dropdownMenu.setAttribute("data-dropdown-active", "true");
 		commandDropdown.setAttribute("data-dropdown-active", "true");
+		
+		setTimeout(() => {
+			window.addEventListener("click", closeDropdown);
+		}, 1 * 100);
+		
 	} else {
 		dropdownMenu.setAttribute("data-dropdown-active", "false");
 		commandDropdown.setAttribute("data-dropdown-active", "false");
