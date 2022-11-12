@@ -31,6 +31,7 @@ let settingsNavGeneral = document.getElementById("settings_general");
 let settingsNavClose = document.getElementById("settings_close");
 
 let settingsLinksSection = document.getElementById("links_section");
+let settingsLinksWrapper = document.getElementById("links_wrapper");
 // ==============================================
 // Useful Functions
 // ==============================================
@@ -62,7 +63,7 @@ function setTime(userFormat = "") {
 // Change Date
 function setDate(userFormat = "") {
 	let dateString;
-	
+
 	if (userFormat != "") {
 		dateString = moment().format(userFormat);
 	} else {
@@ -161,21 +162,21 @@ function setWeather() {
 // Make Dropdown Functional
 function setDropdown() {
 	let dropdownValues = {
-		"google" : "search.svg",
-		"command" : "arrow-right.svg",
-		"browse" : "globe.svg",
-		"reddit" : "user.svg",
-		"youtube" : "tv.svg",
-		"twitch" : "youtube.svg",
-		"duckduckgo" : "search.svg",
-		"bing" : "search.svg",
+		google: "search.svg",
+		command: "arrow-right.svg",
+		browse: "globe.svg",
+		reddit: "user.svg",
+		youtube: "tv.svg",
+		twitch: "youtube.svg",
+		duckduckgo: "search.svg",
+		bing: "search.svg",
 	};
-	
+
 	let currently_selected = localStorage.getItem("currentCommand");
 	commandText.innerHTML =
 		currently_selected.charAt(0).toLocaleUpperCase() +
 		currently_selected.slice(1);
-	
+
 	commandIcon.src = "./icons/" + dropdownValues[currently_selected];
 
 	for (let dropdownPair of Object.entries(dropdownValues)) {
@@ -211,7 +212,7 @@ function setDropdown() {
 				localStorage.setItem("currentCommand", dropdownValue);
 				setDropdown();
 			});
-			
+
 			// Append Content
 			dropdownWrapper.appendChild(dropdownTextElement);
 			dropdownWrapper.appendChild(dropdownIcon);
@@ -319,11 +320,10 @@ const img = new Image();
 
 // set event listener for the image (used later)
 img.addEventListener("load", function () {
-
 	// Makes an image palatte from colorThief, and makes an empty array for the hex values
 	let imagePalette = colorThief.getPalette(img, 2);
 	let imagePaletteHex = [];
-	
+
 	// Gets hex values
 	for (let colorRGB of imagePalette) {
 		imagePaletteHex.push(rgbToHex(colorRGB[0], colorRGB[1], colorRGB[2]));
@@ -374,7 +374,7 @@ img.addEventListener("load", function () {
 	localStorage.setItem("secondary-invert-value", secondaryInvertValue);
 	localStorage.setItem("suggestion-color", mainForegroundColor + "4D");
 	setCookie("styleSet", "true", 10);
-	
+
 	// Reloads the window and lets premain.js handle theme changing
 	window.location.reload();
 });
@@ -394,8 +394,8 @@ settingsButton.addEventListener("click", function () {
 	}
 });
 
-settingsNavClose.addEventListener("click", function(){
-	console.log("HUH")
+settingsNavClose.addEventListener("click", function () {
+	console.log("HUH");
 	if (mainContentSection.getAttribute("data-visibility") == "invisible") {
 		mainContentSection.setAttribute("data-visibility", "visible");
 		settingsSection.setAttribute("data-visibility", "invisible");
@@ -403,4 +403,4 @@ settingsNavClose.addEventListener("click", function(){
 		mainContentSection.setAttribute("data-visibility", "invisible");
 		settingsSection.setAttribute("data-visibility", "visible");
 	}
-})
+});

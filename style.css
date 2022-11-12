@@ -140,6 +140,9 @@ body {
     overflow: scroll;
 }
 
+input::placeholder {
+    opacity: 75%;
+}
 .longer_input {
     width: 40ch;
 }
