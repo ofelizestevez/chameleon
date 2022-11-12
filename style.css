@@ -157,10 +157,15 @@ input::placeholder {
 
 .suggestion_text {
     position: absolute;
-    top: 0%;
+    top: 100%;
     left: 0%;
     color: var(--suggestion-color);
-    padding: calc((35px - 19px) / 2) 0;
+    padding: calc((35px - 19px) / 2);
+    background-color: red;
+
+    color: var(--secondary-foreground-color);
+    background-color: var(--secondary-background-color);
+    border-radius: var(--border-radius);
 }
 
 .info {

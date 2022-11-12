@@ -4,7 +4,7 @@
 function googleCommand(q) {
 	q = encodeURIComponent(q);
 	url = "http://www.google.com/search?q=" + q;
-	window.open(url);
+	window.open(url, "_self");
 }
 
 function userCommand(s) {
@@ -19,7 +19,7 @@ function userCommand(s) {
 			url = "https://mail.google.com/";
 		}
 
-		window.open(url);
+		window.open(url, "_self");
 	}
 	function gdrive(s) {
 		if (!isNaN(s)) {
@@ -28,7 +28,7 @@ function userCommand(s) {
 			url = "https://drive.google.com/";
 		}
 
-		window.open(url);
+		window.open(url, "_self");
 	}
 	let commandString = s.split(" ");
 	console.log(commandString);
@@ -101,18 +101,13 @@ function browseCommand(s) {
 	s = s.includes("https://") || s.includes("http://") ? s : "https://" + s;
 	s = s.includes(".") ? s : s + ".com";
 	url = s;
-	window.open(url);
+	window.open(url, "_self");
 }
 
 function redditCommand(s) {
-	// get string
-	// split it into each word
-	// if split [0] equals r
-	// else if split[0] equals u
-	// else search
 	q = encodeURIComponent(s);
-	url = "https://www.reddit.com/search/?q=" + q;
-	window.open(url);
+	url = "https://www.reddit.com/r/" + q;
+	window.open(url, "_self");
 }
 
 function youtubeCommand(s) {
@@ -122,7 +117,7 @@ function youtubeCommand(s) {
 	// else search
 	q = encodeURIComponent(s);
 	url = "https://www.youtube.com/results?search_query=" + q;
-	window.open(url);
+	window.open(url, "_self");
 }
 
 function twitchCommand(s) {
@@ -134,41 +129,53 @@ function twitchCommand(s) {
 	// else search
 	q = encodeURIComponent(s);
 	url = "https://www.twitch.tv/search?term=" + q;
-	window.open(url);
+	window.open(url, "_self");
 }
 
 function duckduckgoCommand(s) {
 	q = encodeURIComponent(s);
 	url = "https://duckduckgo.com/?q=" + q;
-	window.open(url);
+	window.open(url, "_self");
 }
 
 function bingCommand(s) {
 	q = encodeURIComponent(s);
 	url = "https://www.bing.com/search?q=" + q;
-	window.open(url);
+	window.open(url, "_self");
 }
 
 let suggestions;
 let suggestionIndex = 0;
+
 commandInput.addEventListener("keyup", function (event) {
 	function clearInput() {
 		commandInput.value = "";
 		suggestionElement.innerHTML = "";
 		suggestions = undefined;
 		suggestionIndex = 0;
+		suggestionElement.setAttribute("data-visibility", "invisible");
 	}
 
 	val = commandInput.value;
+
+	// If event is tab or control and suggestions isn't empty, then set commandinput value and clean
 	if (
 		(event.key === "Tab" || event.key === "Control") &&
 		suggestionElement.innerHTML != ""
 	) {
 		event.preventDefault();
 		commandInput.value = suggestionElement.innerHTML;
-	} else if (event.key === "Backspace" && commandInput.value == "") {
+		suggestionElement.innerHTML = "";
+		suggestionElement.setAttribute("data-visibility", "invisible");
+	}
+
+	// If event is backspace and and commandinput is empty, clean input (and/or suggestions)
+	else if (event.key === "Backspace" && commandInput.value == "") {
 		clearInput();
-	} else if (event.key === "ArrowUp" && suggestions != undefined) {
+	}
+
+	// If event is arrow up and suggestions aren't undefined, increase through suggestion indexes
+	else if (event.key === "ArrowUp" && suggestions != undefined) {
 		if (suggestionIndex < suggestions.length - 1) {
 			suggestionIndex += 1;
 			suggestionElement.innerHTML = suggestions[suggestionIndex];
@@ -176,7 +183,10 @@ commandInput.addEventListener("keyup", function (event) {
 			suggestionIndex = 0;
 			suggestionElement.innerHTML = suggestions[suggestionIndex];
 		}
-	} else if (event.key === "ArrowDown" && suggestions != undefined) {
+	}
+
+	// If event is arrow down and suggestions aren't undefined, decrease through suggestion indexes
+	else if (event.key === "ArrowDown" && suggestions != undefined) {
 		if (suggestionIndex == 0) {
 			suggestionIndex = suggestions.length - 1;
 			suggestionElement.innerHTML = suggestions[suggestionIndex];
@@ -184,7 +194,10 @@ commandInput.addEventListener("keyup", function (event) {
 			suggestionIndex -= 1;
 			suggestionElement.innerHTML = suggestions[suggestionIndex];
 		}
-	} else if (event.key === "Enter") {
+	}
+
+	// If event is enter, then do different types of things depending on what the dropdown value is
+	else if (event.key === "Enter") {
 		switch (commandText.innerHTML) {
 			case "Google":
 				googleCommand(val);
@@ -198,7 +211,7 @@ commandInput.addEventListener("keyup", function (event) {
 				browseCommand(val);
 				clearInput();
 				break;
-			case "Reddit":
+			case "Subreddit":
 				redditCommand(val);
 				clearInput();
 				break;
@@ -218,13 +231,20 @@ commandInput.addEventListener("keyup", function (event) {
 				bingCommand(val);
 				clearInput();
 				break;
+            default:
+                console.log(commandText.innerHTML);
 		}
-	} else {
+	}
+
+	// If keydown isn't a special key, then it's normal text, which we could use for suggestion
+	else {
 		switch (commandText.innerHTML) {
 			case "Google":
 				fetch(
-					"https://corsanywhere.herokuapp.com/http://suggestqueries.google.com/complete/search?client=chrome&q=" +
-						val
+					"https://corsanywhere.herokuapp.com/" +
+					"http://suggestqueries.google.com/complete/" +
+					"search?client=chrome&q=" +
+					val
 				)
 					.then((response) => response.json())
 					.then((data) => {
@@ -233,6 +253,7 @@ commandInput.addEventListener("keyup", function (event) {
 							if (suggestions[0] != undefined && val != "") {
 								suggestionIndex = 0;
 								suggestionElement.innerHTML = suggestions[suggestionIndex];
+								suggestionElement.setAttribute("data-visibility", "visible");
 							}
 						}
 					});
@@ -242,7 +263,19 @@ commandInput.addEventListener("keyup", function (event) {
 				break;
 			case "Browse":
 				break;
-			case "Reddit":
+			case "Subreddit":
+                fetch("https://www.reddit.com/subreddits/search.json?limit=10&include_over_18=on&q=" + val)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        suggestions = Object.values(data["data"]["children"])
+                                            .map(item => item["data"]["display_name"])
+						if (suggestions[0] != undefined && val != "") {
+                            console.log("HI?")
+							suggestionIndex = 0;
+							suggestionElement.innerHTML = suggestions[suggestionIndex];
+							suggestionElement.setAttribute("data-visibility", "visible");
+						}
+                    })
 				break;
 			case "Youtube":
 				break;
@@ -254,4 +287,11 @@ commandInput.addEventListener("keyup", function (event) {
 				break;
 		}
 	}
+});
+
+suggestionElement.addEventListener("click", function () {
+	commandInput.value = suggestionElement.innerHTML;
+	suggestionElement.innerHTML = "";
+	suggestionElement.setAttribute("data-visibility", "invisible");
+	commandInput.focus();
 });

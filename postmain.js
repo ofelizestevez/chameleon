@@ -165,7 +165,7 @@ function setDropdown() {
 		google: "search.svg",
 		command: "arrow-right.svg",
 		browse: "globe.svg",
-		reddit: "user.svg",
+		subreddit: "user.svg",
 		youtube: "tv.svg",
 		twitch: "youtube.svg",
 		duckduckgo: "search.svg",
@@ -195,7 +195,7 @@ function setDropdown() {
 
 			// Append class names
 			dropdownWrapper.classList.add("dropdown_option");
-			dropdownIcon.classList.add("command_icon");
+			dropdownIcon.classList.add("secondary_icon");
 
 			// Edit Content
 			dropdownTextElement.innerHTML =
