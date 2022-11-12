@@ -230,6 +230,41 @@ function addBookmarkElement() {
 	return wrapper;
 }
 
+
+// ==============================================
+// Navbar functionality
+// ==============================================
+settingsNavClose.addEventListener("click", function () {
+	if (mainContentSection.getAttribute("data-visibility") == "invisible") {
+		mainContentSection.setAttribute("data-visibility", "visible");
+		settingsSection.setAttribute("data-visibility", "invisible");
+	} else {
+		mainContentSection.setAttribute("data-visibility", "invisible");
+		settingsSection.setAttribute("data-visibility", "visible");
+	}
+});
+
+settingsNavHowTo.addEventListener("click", function(){
+    settingsLinksSection.setAttribute("data-visibility", "invisible");
+    settingsHowToSection.setAttribute("data-visibility", "visible");
+    settingsGeneralSection.setAttribute("data-visibility", "invisible");
+})
+
+settingsNavLinks.addEventListener("click", function(){
+    settingsLinksSection.setAttribute("data-visibility", "visible");
+    settingsHowToSection.setAttribute("data-visibility", "invisible");
+    settingsGeneralSection.setAttribute("data-visibility", "invisible");
+})
+
+settingsNavGeneral.addEventListener("click", function(){
+    settingsLinksSection.setAttribute("data-visibility", "invisible");
+    settingsHowToSection.setAttribute("data-visibility", "invisible");
+    settingsGeneralSection.setAttribute("data-visibility", "visible");
+})
+
+// ==============================================
+// Links section functionality
+// ==============================================
 // Adds the "add section" div and gives it functionality
 let addBookmarkRow = addBookmarkElement();
 addBookmarkRow.addEventListener("click", function () {
@@ -242,6 +277,7 @@ let saveButton = document.createElement("div");
 let saveText = document.createElement("p");
 let saveIcon = document.createElement("img");
 
+// Save button Class list
 saveButton.classList.add(
 	"command_dropdown",
 	"currently_selected",
@@ -250,9 +286,12 @@ saveButton.classList.add(
 	"save_button"
 );
 saveIcon.classList.add("secondary_icon");
+
+// Save button content
 saveText.innerHTML = "Save";
 saveIcon.src = "./icons/save.svg";
 
+// Save button functionality
 saveButton.addEventListener("click", function () {
 	let bookmarkSections =
 		settingsLinksSection.getElementsByClassName("bookmark_section");
@@ -295,11 +334,12 @@ saveButton.addEventListener("click", function () {
 	window.location.reload();
 });
 
+// Append Save button
 saveButton.appendChild(saveIcon);
 saveButton.appendChild(saveText);
 settingsLinksSection.appendChild(saveButton);
 
-//
+// Makes bookmarks based on the bookmark dict
 let bookmarks = JSON.parse(localStorage.getItem("bookmarks"));
 for (let column of Object.entries(bookmarks)) {
 	let columnTitle = column[0];
@@ -307,3 +347,10 @@ for (let column of Object.entries(bookmarks)) {
 
 	createBookmarkSection(columnTitle, columnLinks, "Section Title");
 }
+
+// Makes settings default (TESTING ONLY)
+// mainContentSection.setAttribute("data-visibility", "invisible");
+// settingsSection.setAttribute("data-visibility", "visible");
+// settingsLinksSection.setAttribute("data-visibility", "invisible");
+// settingsHowToSection.setAttribute("data-visibility", "invisible");
+// settingsGeneralSection.setAttribute("data-visibility", "visible");

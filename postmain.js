@@ -32,6 +32,8 @@ let settingsNavClose = document.getElementById("settings_close");
 
 let settingsLinksSection = document.getElementById("links_section");
 let settingsLinksWrapper = document.getElementById("links_wrapper");
+let settingsHowToSection = document.getElementById("how_to_section");
+let settingsGeneralSection = document.getElementById("general_section");
 // ==============================================
 // Useful Functions
 // ==============================================
@@ -409,13 +411,4 @@ settingsButton.addEventListener("click", function () {
 	}
 });
 
-settingsNavClose.addEventListener("click", function () {
-	console.log("HUH");
-	if (mainContentSection.getAttribute("data-visibility") == "invisible") {
-		mainContentSection.setAttribute("data-visibility", "visible");
-		settingsSection.setAttribute("data-visibility", "invisible");
-	} else {
-		mainContentSection.setAttribute("data-visibility", "invisible");
-		settingsSection.setAttribute("data-visibility", "visible");
-	}
-});
+

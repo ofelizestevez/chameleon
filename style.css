@@ -268,6 +268,25 @@ li:hover, a:hover{
 .save_button {
     margin: 1rem;
 }
+
+.radio_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio_button input {
+    appearance: none;
+    background-color: var(--main-background-color);
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 0.15rem solid var(--main-foreground-color);
+    border-radius: 50%;
+}
+
+.radio_button input:checked {
+    background-color: var(--main-foreground-color);
+}
 /* Animations */
 
 @keyframes fade_in_content {
