@@ -63,7 +63,7 @@ body {
 }
 
 *[data-visibility="invisible"]{
-    display: none;
+    display: none !important;
 }
 
 .top_bar {
