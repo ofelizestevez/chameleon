@@ -1,7 +1,7 @@
 class searchType {
     constructor(){
         this._name;
-        this._iconFolder = "./icons/general/"
+        this._iconFolder = "./Icons/General/"
         this._icon;
     }
 

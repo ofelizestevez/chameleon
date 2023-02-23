@@ -144,7 +144,7 @@ function setWeather() {
 						? Object.assign({}, sun, otherWeatherCodes)
 						: Object.assign({}, moon, otherWeatherCodes);
 				let icon = codeToIconPath[weatherCode];
-				weatherIconElement.src = "./icons/Weather/" + icon;
+				weatherIconElement.src = "./Icons/Weather/" + icon;
 				let weatherString = Math.floor(temp) + "°";
 				weatherString += useFahrenheit ? "F" : "C";
 				weatherTempElement.innerHTML = weatherString;
