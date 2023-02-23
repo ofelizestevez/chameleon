@@ -1,20 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
 
 :root {
-    --main-background-color: #1B2329;
-    --main-foreground-color: #ffffff;
-    --main-invert-value: 100%;
+    --primary-background-color: #1B2329;
+    --primary-foreground-color: #ffffff;
+    --primary-invert-value: 100%;
 
     --secondary-background-color: #CDD9EA;
     --secondary-foreground-color: #000000;
     --secondary-invert-value: 0%;
     
-    --suggestion-color: #FFFFFF4D;
+    --old-primary-background-color: #1B2329;
+    --old-secondary-background-color: #CDD9EA;
+
     --background-image: url("bg.jpg");
+    --placeholder-image: url("bg.jpg");
     --font-family: 'Montserrat', sans-serif;
 
     --separator-width: 1px;
     --border-radius: 8px;
+
+    --fade-duration: 0.5s;
 }
 
 * {
@@ -24,35 +29,131 @@
 }
 
 body {
-    background-color: var(--main-background-color);
-}
-
-.main {
-    background-color: black;
+    background-color: var(--primary-background-color);
     height: 100vh;
     width: 100vw;
     display: grid;
     grid-template-columns: 1fr 2fr;
     font-family: var(--font-family);
-    color: var(--main-foreground-color);
+    color: var(--primary-foreground-color);
 }
 
-.image {
-    width: 100%;
-    height: 100%;
+*[data-visibility="invisible"]{
+    display: none !important;
+}
+
+#content {
+    max-width: 1280px;
+}
+
+#background-image, #placeholder-image {
+    position: absolute;
     background-image: var(--background-image);
     background-size: cover;
     background-position: center;
-    background-color: var(--main-background-color);
-}
-
-.content, .main_content {
     width: 100%;
     height: 100%;
-    background-color: var(--main-background-color);
 }
 
-.main_content {
+#placeholder-image {
+    background-image: var(--placeholder-image);
+}
+
+.fade-out-image {
+    animation: fadeOut var(--fade-duration) forwards;
+}
+
+.primary-bg-animation {
+    animation: primaryBgAnimation var(--fade-duration) forwards;
+}
+
+.secondary-bg-animation {
+    animation: secondaryBgAnimation var(--fade-duration) forwards;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes primaryBgAnimation {
+    0% { background-color: var(--old-primary-background-color); }
+    100% { background-color: var(--primary-background-color); }
+}
+
+@keyframes secondaryBgAnimation {
+    0% { 
+        background-color: var(--old-secondary-background-color);
+     }
+    100% { 
+        background-color: var(--secondary-background-color);
+     }
+}
+
+/* 
+General Styles Start
+*/
+.secondary-icon {
+    filter: invert(var(--secondary-invert-value));
+}
+
+#image-wrapper {
+    position: relative;
+}
+
+.general-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.general-gap {
+    gap: 8px;
+}
+
+.input{
+    all: unset;
+    color: var(--main-foreground-color);
+    width: 20ch;
+    overflow: scroll;
+}
+
+.input::placeholder {
+    color: var(--main-foreground-color);
+}
+
+.vertical-separator {
+    height: 24px;
+    width: var(--separator-width);
+    background-color: var(--primary-foreground-color);
+}
+
+.horizontal-separator {
+    height: var(--separator-width);
+    background-color: var(--primary-foreground-color);
+}
+
+.secondary-popup {
+    background-color: var(--secondary-background-color);
+    color: var(--secondary-foreground-color);
+    padding: 6px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.title {
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+/* 
+General Styles End
+*/
+
+/* 
+start-page section start
+*/
+
+#start-page {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -62,11 +163,7 @@ body {
     gap: 16px;
 }
 
-*[data-visibility="invisible"]{
-    display: none !important;
-}
-
-.top_bar {
+#status-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -74,135 +171,36 @@ body {
     z-index: 1;
 }
 
-.command_bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.command_dropdown {
-    background-color: var(--secondary-background-color);
-    color: var(--secondary-foreground-color);
-    padding: 6px;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-}
-
-.currently_selected{
-    display: flex;
-    align-items: center;
-}
-
-.currently_selected:hover {
+#current-search-selection:hover {
     text-decoration: underline;
 }
 
-.secondary_icon {
-    filter: invert(var(--secondary-invert-value));
+#current-search-type__icon {
+    margin-left: 8px;
 }
 
-.dropdown_menu {
+#dropdown__menu {
     position: absolute;
-    top: calc(12px + 24px);
-    left: 0px;
-    padding: 6px;
-    color: var(--secondary-foreground-color);
-    background-color: var(--secondary-background-color);
-    border-radius: var(--border-radius);
-    margin-top: 0.5rem;
 }
 
-
-.dropdown_menu[data-dropdown-active="false"]{
-    display: none;
-}
-
-.dropdown_option {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    color: var(--secondary-foreground-color);
-}
-
-.dropdown_menu li:last-child {
-    margin-bottom: 0px;
-}
-
-.input_wrapper {
+#input__wrapper {
     position: relative;
 }
 
-.input, input::placeholder{
-    all: unset;
-    color: var(--main-foreground-color);
-    width: 20ch;
-    overflow: scroll;
-}
-
-input::placeholder {
-    opacity: 75%;
-}
-.longer_input {
-    width: 40ch;
-}
-
-.underline {
-    border-bottom: 1px solid;
-}
-
-#command_text {
-    margin-right: 8px;
-}
-
-.suggestion_text {
+#suggestion-text {
     position: absolute;
-    top: 100%;
-    left: 0%;
-    color: var(--suggestion-color);
-    padding: calc((35px - 19px) / 2);
-    background-color: red;
-
-    color: var(--secondary-foreground-color);
-    background-color: var(--secondary-background-color);
-    border-radius: var(--border-radius);
 }
 
-.info {
-    display: flex;
-    gap: 8px;
-    align-items: center;
+#weather__icon {
+    filter: invert(var(--primary-invert-value));
 }
 
-.weather {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.main_icon {
-    filter: invert(var(--main-invert-value));
-}
-.bar_separator {
-    height: 24px;
-    width: var(--separator-width);
-    background-color: var(--main-foreground-color);
-}
-
-.separator {
-    height: var(--separator-width);
-    background-color: var(--main-foreground-color);
-}
 .bookmarks {
     display: flex;
     gap: 48px;
     position: relative;
     z-index: 0;
-}
-
-.title {
-    margin-bottom: 16px;
-    font-weight: 500;
+    flex-wrap: wrap;
 }
 
 li, a{
@@ -217,92 +215,6 @@ li:hover, a:hover{
     text-decoration: underline;
 }
 
-.settings_icon {
-    position: absolute;
-    bottom: 50px;
-    right: 50px;
-    filter: invert(var(--main-invert-value));
-    cursor: pointer;
-}
-
-.settings {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 48px;
-    gap: 16px;
-    /* justify-content: center; */
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-around;
-    padding: 48px 0;
-}
-
-.column_title {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    gap: 0.5rem;
-}
-
-.settings table {
-    margin-bottom: 2rem;
-}
-
-.fakeh2{
-    font-size: 1.5rem;
-    font-weight: 500;
-    width: 15ch;
-}
-
-.clickable {
-    cursor: pointer;
-}
-.clickable:hover {
-    text-decoration: underline;
-}
-
-.save_button {
-    margin: 1rem;
-}
-
-.radio_button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.radio_button input {
-    appearance: none;
-    background-color: var(--main-background-color);
-    width: 1.15rem;
-    height: 1.15rem;
-    border: 0.15rem solid var(--main-foreground-color);
-    border-radius: 50%;
-}
-
-.radio_button input:checked {
-    background-color: var(--main-foreground-color);
-}
-/* Animations */
-
-@keyframes fade_in_content {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.settings_icon, .separator{
-    animation: fade_in_content 0.9s forwards;
-}
-
-.top_bar, .bookmarks {
-    opacity: 0;
-    animation: fade_in_content 0.7s forwards 0.2s;
-}
+/* 
+start-page section end
+*/

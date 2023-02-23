@@ -1,39 +1,30 @@
 // ==============================================
 // Initialize elements
 // ==============================================
+let startPageSection = document.getElementById("start-page");
+let settingsSection = document.getElementById("start-page");
+
+let usernameElement = document.getElementById("username");
+let commandDropdown = document.getElementById("dropdown__menu");
+let dropdownButton = document.getElementById("current-search-selection");
+let commandTextElement = document.getElementById("current-search-type__text");
+let commandIconElement = document.getElementById("current-search-type__icon");
+let commandInputElement = document.getElementById("search-input");
+let suggestionElement = document.getElementById("suggestion-text");
+
 let timeElement = document.getElementById("time");
 let dateElement = document.getElementById("date");
 
-let weatherIconElement = document.getElementById("weather_icon");
-let weatherTempElement = document.getElementById("weather_text");
+let weatherIconElement = document.getElementById("weather__icon");
+let weatherTempElement = document.getElementById("weather__text");
 
-let usernameElement = document.getElementById("username");
-let commandDropdown = document.getElementById("dropdown_menu");
-let dropdownButton = document.getElementById("currently_selected");
-let commandText = document.getElementById("command_text");
-let commandIcon = document.getElementById("command_icon");
-let commandInput = document.getElementById("command_input");
-let suggestionElement = document.getElementById("suggestion_text");
-
-let dropdownMenu = document.getElementById("command_dropdown");
-let dropdownElement = document.getElementById("dropdown_values");
+let dropdownElement = document.getElementById("dropdown");
+let dropdownMenuElement = document.getElementById("dropdown__menu");
 
 let bookmarkElement = document.getElementById("bookmarks");
-let imageElement = document.getElementById("image");
+let imageWrapper = document.getElementById("image-wrapper");
+let imageElement = document.getElementById("background-image");
 
-let mainContentSection = document.getElementById("main_content");
-let settingsButton = document.getElementById("settings_icon");
-let settingsSection = document.getElementById("settings");
-
-let settingsNavHowTo = document.getElementById("settings_how_to");
-let settingsNavLinks = document.getElementById("settings_links");
-let settingsNavGeneral = document.getElementById("settings_general");
-let settingsNavClose = document.getElementById("settings_close");
-
-let settingsLinksSection = document.getElementById("links_section");
-let settingsLinksWrapper = document.getElementById("links_wrapper");
-let settingsHowToSection = document.getElementById("how_to_section");
-let settingsGeneralSection = document.getElementById("general_section");
 // ==============================================
 // Useful Functions
 // ==============================================
@@ -41,7 +32,7 @@ let settingsGeneralSection = document.getElementById("general_section");
 // RGB to Hex
 function rgbToHex(r, g, b) {
 	function componentToHex(c) {
-		var hex = c.toString(16);
+		var hex = Math.round(c).toString(16);
 		return hex.length == 1 ? "0" + hex : hex;
 	}
 	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
@@ -83,6 +74,7 @@ function setWeather() {
 
 		localStorage.setItem("lat", lat);
 		localStorage.setItem("long", long);
+        setWeather();
 	}
 
 	if (navigator.geolocation && localStorage.getItem("lat") == null) {
@@ -152,8 +144,7 @@ function setWeather() {
 						? Object.assign({}, sun, otherWeatherCodes)
 						: Object.assign({}, moon, otherWeatherCodes);
 				let icon = codeToIconPath[weatherCode];
-				weatherIconElement.src = "./weather icons/" + icon;
-
+				weatherIconElement.src = "./icons/Weather/" + icon;
 				let weatherString = Math.floor(temp) + "°";
 				weatherString += useFahrenheit ? "F" : "C";
 				weatherTempElement.innerHTML = weatherString;
@@ -161,70 +152,8 @@ function setWeather() {
 	}
 }
 
-// Make Dropdown Functional
-function setDropdown() {
-	let dropdownValues = {
-		google: "search.svg",
-		command: "arrow-right.svg",
-		browse: "globe.svg",
-		subreddit: "user.svg",
-		youtube: "tv.svg",
-		twitch: "youtube.svg",
-		duckduckgo: "search.svg",
-		bing: "search.svg",
-	};
-
-	let currently_selected = localStorage.getItem("currentCommand");
-	commandText.innerHTML =
-		currently_selected.charAt(0).toLocaleUpperCase() +
-		currently_selected.slice(1);
-
-	commandIcon.src = "./icons/" + dropdownValues[currently_selected];
-
-	for (let dropdownPair of Object.entries(dropdownValues)) {
-		let dropdownValue = dropdownPair[0];
-		let dropdownIconSrc = dropdownPair[1];
-
-		// If dropdown value isn't currently selected, then add them to the menu
-		if (
-			dropdownValue.toLocaleLowerCase() !=
-			currently_selected.toLocaleLowerCase()
-		) {
-			// Makes elements that will be used
-			let dropdownWrapper = document.createElement("li");
-			let dropdownTextElement = document.createElement("p");
-			let dropdownIcon = document.createElement("img");
-
-			// Append class names
-			dropdownWrapper.classList.add("dropdown_option");
-			dropdownIcon.classList.add("secondary_icon");
-
-			// Edit Content
-			dropdownTextElement.innerHTML =
-				dropdownValue.charAt(0).toLocaleUpperCase() + dropdownValue.slice(1);
-			dropdownIcon.src = "./icons/" + dropdownIconSrc;
-
-			// Add JS Magic
-			dropdownWrapper.addEventListener("click", function () {
-				// This is used for the css values
-				dropdownMenu.setAttribute("data-dropdown-active", "false");
-				commandDropdown.setAttribute("data-dropdown-active", "false");
-
-				// Sets new command and reruns function
-				localStorage.setItem("currentCommand", dropdownValue);
-				setDropdown();
-			});
-
-			// Append Content
-			dropdownWrapper.appendChild(dropdownTextElement);
-			dropdownWrapper.appendChild(dropdownIcon);
-			dropdownElement.appendChild(dropdownWrapper);
-		}
-	}
-}
-
 // Change Image + Colors
-function setImageUnsplash() {
+function setImageUnsplash(img) {
 	// Get Random Image From Unsplash
 	fetch("https://source.unsplash.com/random/").then((response) => {
 		let url = response.url;
@@ -233,60 +162,11 @@ function setImageUnsplash() {
 	});
 }
 
-// Bookmarks
-function setBookmarks() {
-	let bookmarks = JSON.parse(localStorage.getItem("bookmarks"));
-
-	// Bookmarks is a dictionary made up of dictionaries
-	for (let column of Object.entries(bookmarks)) {
-		let columnTitle = column[0];
-		let columnLinks = column[1];
-
-		// create elements being used
-		let columnHeader = document.createElement("h1");
-		let columnWrapper = document.createElement("div");
-		let columnLinkWrapper = document.createElement("ul");
-
-		// adds classes to to classnames
-		columnWrapper.classList.add("column");
-		columnHeader.classList.add("title");
-		columnLinkWrapper.classList.add("links");
-
-		// Adds Content
-		columnHeader.innerHTML = columnTitle;
-		// Goes through all column links (column[1] is a dict)
-		for (let link of Object.entries(columnLinks)) {
-			// Creates elements
-			let linkElement = document.createElement("li");
-			let linkChildElement = document.createElement("a");
-
-			// Adds Content
-			linkChildElement.innerHTML = link[0];
-			linkChildElement.href = link[1];
-			// Append
-			linkElement.appendChild(linkChildElement);
-			columnLinkWrapper.appendChild(linkElement);
-		}
-
-		// Append everything
-		columnWrapper.appendChild(columnHeader);
-		columnWrapper.appendChild(columnLinkWrapper);
-		bookmarkElement.appendChild(columnWrapper);
-	}
-}
-
-// Username
-function setUsername() {
-	if (localStorage.getItem("username") != null) {
-		usernameElement.innerHTML = localStorage.getItem("username") + "@";
-	}
-}
-
 // ==============================================
 // Main
 // ==============================================
-let time = new Date();
-let secondsLeftInMin = 60 - time.getSeconds();
+let currentTime = new Date();
+let secondsLeftInMin = 60 - currentTime.getSeconds();
 
 // Sets Time, Date, Weather
 setTime();
@@ -300,42 +180,11 @@ setTimeout(() => {
 	setInterval(setTime, 60000);
 }, secondsLeftInMin * 1000);
 
-setDropdown();
+suggestionElement.setAttribute("data-visibility", "invisible")
 
-
-
-// Adds ability to dropdown button to turn on and off the menu.
-dropdownButton.addEventListener("click", function () {
-	function closeDropdown(){
-		if (dropdownMenu.getAttribute("data-dropdown-active") == "true") {
-			dropdownMenu.setAttribute("data-dropdown-active", "false");
-			commandDropdown.setAttribute("data-dropdown-active", "false");
-		}
-		window.removeEventListener("click", closeDropdown);
-	}
-
-	if (dropdownMenu.getAttribute("data-dropdown-active") == "false") {
-		dropdownMenu.setAttribute("data-dropdown-active", "true");
-		commandDropdown.setAttribute("data-dropdown-active", "true");
-		
-		setTimeout(() => {
-			window.addEventListener("click", closeDropdown);
-		}, 1 * 100);
-		
-	} else {
-		dropdownMenu.setAttribute("data-dropdown-active", "false");
-		commandDropdown.setAttribute("data-dropdown-active", "false");
-	}
-});
-
-setBookmarks();
-setUsername();
-
-// Starts theme process
 const colorThief = new ColorThief();
 const img = new Image();
 
-// set event listener for the image (used later)
 img.addEventListener("load", function () {
 	// Makes an image palatte from colorThief, and makes an empty array for the hex values
 	let imagePalette = colorThief.getPalette(img, 2);
@@ -347,8 +196,8 @@ img.addEventListener("load", function () {
 	}
 
 	// Sets the values used later
-	let mainForegroundColor = "";
-	let mainInvertValue = "";
+	let primaryForegroundColor = "";
+	let primaryInvertValue = "";
 	let secondaryForegroundColor = "";
 	let secondaryInvertValue = "";
 
@@ -360,11 +209,11 @@ img.addEventListener("load", function () {
 			255 >
 		0.5
 	) {
-		mainForegroundColor = "#000000";
-		mainInvertValue = "0%";
+		primaryForegroundColor = "#000000";
+		primaryInvertValue = "0%";
 	} else {
-		mainForegroundColor = "#FFFFFF";
-		mainInvertValue = "100%";
+		primaryForegroundColor = "#FFFFFF";
+		primaryInvertValue = "100%";
 	}
 	// SECONDARY COLORS: same if else as before
 	if (
@@ -382,33 +231,59 @@ img.addEventListener("load", function () {
 	}
 
 	// Sets all localstorage values, sets the styleSet cookie
+
 	localStorage.setItem("background-image", img.src);
-	localStorage.setItem("main-background-color", imagePaletteHex[0]);
-	localStorage.setItem("main-foreground-color", mainForegroundColor);
-	localStorage.setItem("main-invert-value", mainInvertValue);
+	localStorage.setItem("primary-background-color", imagePaletteHex[0]);
+	localStorage.setItem("primary-foreground-color", primaryForegroundColor);
+	localStorage.setItem("primary-invert-value", primaryInvertValue);
 	localStorage.setItem("secondary-background-color", imagePaletteHex[1]);
 	localStorage.setItem("secondary-foreground-color", secondaryForegroundColor);
 	localStorage.setItem("secondary-invert-value", secondaryInvertValue);
-	localStorage.setItem("suggestion-color", mainForegroundColor + "4D");
 	setCookie("styleSet", "true", 10);
 
-	// Reloads the window and lets premain.js handle theme changing
-	window.location.reload();
+	let placeHolderElement = imageElement.cloneNode();
+	placeHolderElement.style.backgroundImage = getComputedStyle(document.documentElement).getPropertyValue('--background-image')
+	imageWrapper.appendChild(placeHolderElement)
+	placeHolderElement.className += "fade-out-image"
+	
+	let oldPrimaryBgColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
+	let oldSecondaryBgColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-background-color');
+
+	root.style.setProperty("--old-primary-background-color", oldPrimaryBgColor)
+	root.style.setProperty("--old-secondary-background-color", oldSecondaryBgColor)
+
+	root.style.setProperty(
+		"--background-image",
+		'url("' + localStorage.getItem("background-image") + '")'
+	);
+	root.style.setProperty(
+		"--primary-background-color",
+		localStorage.getItem("primary-background-color")
+	);
+	document.body.classList.add("primary-bg-animation")
+
+	root.style.setProperty(
+		"--primary-foreground-color",
+		localStorage.getItem("primary-foreground-color")
+	);
+	
+	root.style.setProperty(
+		"--primary-invert-value",
+		localStorage.getItem("primary-invert-value")
+	);
+	root.style.setProperty(
+		"--secondary-background-color",
+		localStorage.getItem("secondary-background-color")
+	);
+	dropdownButton.classList.add("secondary-bg-animation")
+
+
+	root.style.setProperty(
+		"--secondary-foreground-color",
+		localStorage.getItem("secondary-foreground-color")
+	);
+	root.style.setProperty(
+		"--secondary-invert-value",
+		localStorage.getItem("secondary-invert-value")
+	);
 });
-
-// This is bound to change when settings are added
-if (getCookie("styleSet") == "") {
-	setImageUnsplash();
-}
-
-settingsButton.addEventListener("click", function () {
-	if (mainContentSection.getAttribute("data-visibility") == "visible") {
-		mainContentSection.setAttribute("data-visibility", "invisible");
-		settingsSection.setAttribute("data-visibility", "visible");
-	} else {
-		mainContentSection.setAttribute("data-visibility", "visible");
-		settingsSection.setAttribute("data-visibility", "invisible");
-	}
-});
-
-

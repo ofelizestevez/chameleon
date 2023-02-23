@@ -14,6 +14,7 @@ let useFahrenheit = true;
 let useDefaultTheme = false;
 
 let useNewTab = false;
+// ==============================================
 
 // ==============================================
 // Cookie Functions
@@ -40,36 +41,59 @@ function getCookie(cname) {
 	}
 	return "";
 }
-
-
-
 // ==============================================
 
 const root = document.querySelector(":root");
 
-
-
 // Sets default command
-if (localStorage.getItem("currentSearchType") == null) {
-	localStorage.setItem("currentSearchType", "google");
+if (localStorage.getItem("currentCommand") == null) {
+	localStorage.setItem("currentCommand", "google");
 }
 
+// Sets default bookmarks
+if (localStorage.getItem("bookmarks") == null) {
+	let defaultBookmarks = {
+		General: {
+			Gmail: "https://mail.google.com",
+			Gdrive: "https://drive.google.com",
+			Calendar: "https://calendar.google.com",
+		},
+		Entertainment: {
+			Youtube: "https://www.youtube.com",
+			Twitch: "https://www.twitch.tv",
+			Netflix: "https://www.netflix.com",
+		},
+		Socials: {
+			Reddit: "https://www.reddit.com",
+			Discord: "https://discord.com",
+			Twitter: "https://twitter.com",
+		},
+		Coding: {
+			GitHub: "https://github.com",
+			"Stack Overflow": "https://stackoverflow.com",
+		},
+	};
+
+	localStorage.setItem("bookmarks", JSON.stringify(defaultBookmarks));
+}
+
+// Sets the style from the random image
 if (getCookie("styleSet") != "") {
 	root.style.setProperty(
 		"--background-image",
 		'url("' + localStorage.getItem("background-image") + '")'
 	);
 	root.style.setProperty(
-		"--primary-background-color",
-		localStorage.getItem("primary-background-color")
+		"--main-background-color",
+		localStorage.getItem("main-background-color")
 	);
 	root.style.setProperty(
-		"--primary-foreground-color",
-		localStorage.getItem("primary-foreground-color")
+		"--main-foreground-color",
+		localStorage.getItem("main-foreground-color")
 	);
 	root.style.setProperty(
-		"--primary-invert-value",
-		localStorage.getItem("primary-invert-value")
+		"--main-invert-value",
+		localStorage.getItem("main-invert-value")
 	);
 	root.style.setProperty(
 		"--secondary-background-color",
