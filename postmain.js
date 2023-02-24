@@ -2,7 +2,7 @@
 // Initialize elements
 // ==============================================
 let startPageSection = document.getElementById("start-page");
-let settingsSection = document.getElementById("start-page");
+let settingsSection = document.getElementById("settings");
 
 let usernameElement = document.getElementById("username");
 let commandDropdown = document.getElementById("dropdown__menu");
@@ -25,6 +25,18 @@ let bookmarkElement = document.getElementById("bookmarks");
 let imageWrapper = document.getElementById("image-wrapper");
 let imageElement = document.getElementById("background-image");
 
+let settingsIconElement = document.getElementById("settings-icon");
+let settingsCloseButton = document.getElementById("settings-close");
+let settingsLinksButton = document.getElementById("settings__nav-bar__links");
+let settingsGeneralButton = document.getElementById("settings__nav-bar__general");
+let settingsHowToButton = document.getElementById("settings__nav-bar__howto");
+
+let settingsLinksSection = document.getElementById("links");
+let settingsGeneralSection = document.getElementById("general-settings");
+let settingsHowToSection = document.getElementById("how-to-use");
+
+let addBookmarkRow = document.getElementById("links__settings-add-section");
+let saveButton = document.getElementById("links_settings-save");
 // ==============================================
 // Useful Functions
 // ==============================================
@@ -162,6 +174,48 @@ function setImageUnsplash(img) {
 	});
 }
 
+// Bookmarks
+function setBookmarks() {
+	let bookmarks = JSON.parse(localStorage.getItem("bookmarks"));
+
+	// Bookmarks is a dictionary made up of dictionaries
+	for (let column of Object.entries(bookmarks)) {
+		let columnTitle = column[0];
+		let columnLinks = column[1];
+
+		// create elements being used
+		let columnHeader = document.createElement("h1");
+		let columnWrapper = document.createElement("div");
+		let columnLinkWrapper = document.createElement("ul");
+
+		// adds classes to to classnames
+		columnWrapper.classList.add("column");
+		columnHeader.classList.add("title");
+		columnLinkWrapper.classList.add("links");
+
+		// Adds Content
+		columnHeader.innerHTML = columnTitle;
+		// Goes through all column links (column[1] is a dict)
+		for (let link of Object.entries(columnLinks)) {
+			// Creates elements
+			let linkElement = document.createElement("li");
+			let linkChildElement = document.createElement("a");
+
+			// Adds Content
+			linkChildElement.innerHTML = link[0];
+			linkChildElement.href = link[1];
+			// Append
+			linkElement.appendChild(linkChildElement);
+			columnLinkWrapper.appendChild(linkElement);
+		}
+
+		// Append everything
+		columnWrapper.appendChild(columnHeader);
+		columnWrapper.appendChild(columnLinkWrapper);
+		bookmarkElement.appendChild(columnWrapper);
+	}
+}
+
 // ==============================================
 // Main
 // ==============================================
@@ -179,6 +233,8 @@ setTimeout(() => {
 	setTime();
 	setInterval(setTime, 60000);
 }, secondsLeftInMin * 1000);
+
+setBookmarks();
 
 suggestionElement.setAttribute("data-visibility", "invisible")
 

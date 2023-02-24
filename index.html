@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" />
-    <title>Document</title>
+    <title>Simple-ish Startpage</title>
     <script src="moment.js"></script>
-	<script src="premain.js"></script>
+    <script src="premain.js"></script>
 
 </head>
 
@@ -47,55 +47,58 @@
                 </div>
             </div>
             <div class="horizontal-separator"></div>
-            <div class="bookmarks" id="bookmarks">
-                <div class="column">
-                    <h1 class="title">General</h1>
-                    <ul class="links">
-                        <li><a href="https://mail.google.com">Gmail</a></li>
-                        <li><a href="https://drive.google.com">Gdrive</a></li>
-                        <li><a href="https://calendar.google.com">Calendar</a></li>
-                        <li><a href="https://github.com">GitHub</a></li>
-                    </ul>
-                </div>
-                <div class="column">
-                    <h1 class="title">School</h1>
-                    <ul class="links">
-                        <li><a href="http://portal.njit.edu/">Portal</a></li>
-                        <li><a href="http://njit.instructure.com">Canvas</a></li>
-                        <li><a href="https://drive.google.com/drive/u/1/priority">Drive</a></li>
-                        <li><a href="https://mail.google.com/mail/u/1/?tab=om#inbox">Mail</a></li>
-                    </ul>
-                </div>
-                <div class="column">
-                    <h1 class="title">Entertainment</h1>
-                    <ul class="links">
-                        <li><a href="https://www.youtube.com">Youtube</a></li>
-                        <li><a href="https://www.twitch.tv">Twitch</a></li>
-                        <li><a href="https://www.netflix.com">Netflix</a></li>
-                        <li><a href="https://www.reddit.com">Reddit</a></li>
-                    </ul>
-                </div>
-                <div class="column">
-                    <h1 class="title">Server</h1>
-                    <ul class="links">
-                        <li><a href="http://192.168.16.219:5800/">Jdownloader</a></li>
-                        <li><a href="http://192.168.16.219:8123/">Home Assistant</a></li>
-                        <li><a href="http://192.168.16.219:8082/">MagicMirror</a></li>
-                        <li><a href="http://192.168.16.219:1880/">Node-RED</a></li>
-                        <li><a href="http://192.168.16.219:8081/">qBitttorent</a></li>
-                        <li><a href="http://192.168.16.219/admin/">Pi Hole</a></li>
-                    </ul>
-                </div>
-            </div>
+            <div class="bookmarks" id="bookmarks"></div>
+            <img src="./Icons/General/cog.svg" alt="" id="settings-icon" class="primary-icon">
         </div>
 
-        <div id="settings" data-visibility="invisible"></div>
+        <div id="settings" data-visibility="invisible">
+            <div id="nav-bar">
+                <a id="settings__nav-bar__links">
+                    <h2>Links</h2>
+                </a>
+                <a id="settings__nav-bar__general">
+                    <h2>General Settings</h2>
+                </a>
+                <a id="settings__nav-bar__howto">
+                    <h2>How To Use</h2>
+                </a>
+                <a><img src="Icons/General/x.svg" alt="" id="settings-close" class="primary-icon"></a>
+            </div>
+
+            <div id="general-settings" data-visibility="invisible">
+                <p>a</p>
+                <p>a</p>
+                <p>a</p>
+                <p>a</p>
+            </div>
+            <div id="links" data-visibility="invisible">
+                <div class="info clickable" id="links__settings-add-section">
+                    <img src="Icons/General/plus-circle.svg" class="primary-icon">
+                    <h2>Add Section</h2>
+                </div>
+
+                <div id="links_settings-save" class="secondary-popup currently_selected fakeh2 info save_button">
+                    <img class="secondary-icon" src="Icons/General/save.svg">
+                    <p>Save</p>
+                </div>
+            </div>
+            <div id="how-to-use" data-visibility="invisible">
+                <p>a</p>
+                <p>a</p>
+                <p>a</p>
+                <p>a</p>
+                <p>a</p>
+                <p>a</p>
+            </div>
+
+        </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
     <script type="text/javascript" src="https://SortableJS.github.io/Sortable/Sortable.js"></script>
     <script src="postmain.js"></script>
     <script src="commands.js"></script>
+    <script src="settings.js"></script>
 </body>
 
 </html>

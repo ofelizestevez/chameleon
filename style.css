@@ -59,6 +59,26 @@ body {
     background-image: var(--placeholder-image);
 }
 
+.underline {
+    border-color: var(--primary-foreground-color) ;
+    border-bottom: 1px solid var(--primary-foreground-color) !important;
+}
+
+.input{
+    all: unset;
+    color: var(--main-foreground-color);
+    width: 20ch;
+    overflow: scroll;
+}
+
+.input::placeholder {
+    color: var(--main-foreground-color);
+}
+
+.longer_input {
+    width: 40ch;
+}
+
 .fade-out-image {
     animation: fadeOut var(--fade-duration) forwards;
 }
@@ -74,6 +94,11 @@ body {
 @keyframes fadeOut {
     0% { opacity: 1; }
     100% { opacity: 0; }
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
 }
 
 @keyframes primaryBgAnimation {
@@ -93,6 +118,10 @@ body {
 /* 
 General Styles Start
 */
+.primary-icon {
+    filter: invert(var(--primary-invert-value));
+}
+
 .secondary-icon {
     filter: invert(var(--secondary-invert-value));
 }
@@ -109,17 +138,6 @@ General Styles Start
 
 .general-gap {
     gap: 8px;
-}
-
-.input{
-    all: unset;
-    color: var(--main-foreground-color);
-    width: 20ch;
-    overflow: scroll;
-}
-
-.input::placeholder {
-    color: var(--main-foreground-color);
 }
 
 .vertical-separator {
@@ -161,6 +179,8 @@ start-page section start
     width: 100%;
     height: 100%;
     gap: 16px;
+    position: relative;
+    animation: 0.5s fadeIn forwards;
 }
 
 #status-bar {
@@ -215,6 +235,86 @@ li:hover, a:hover{
     text-decoration: underline;
 }
 
+#settings-icon {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+    cursor: pointer;
+}
+
 /* 
 start-page section end
 */
+
+/* Settings Start */
+
+#settings {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 48px;
+    width: 100%;
+    margin-top: 7.5vh;
+    height: 85vh;
+    gap: 16px;
+    position: relative;
+    animation: 0.5s fadeIn forwards;
+}
+
+#settings #nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8rem;
+    cursor: pointer;
+}
+
+.settings table {
+    margin-bottom: 2rem;
+}
+
+.fakeh2{
+    font-size: 1.5rem;
+    font-weight: 500;
+    width: 15ch;
+}
+
+.clickable {
+    cursor: pointer;
+}
+.clickable:hover {
+    text-decoration: underline;
+}
+
+.save_button {
+    margin: 1rem;
+}
+
+.radio_button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio_button input {
+    appearance: none;
+    background-color: var(--main-background-color);
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 0.15rem solid var(--main-foreground-color);
+    border-radius: 50%;
+}
+
+.radio_button input:checked {
+    background-color: var(--main-foreground-color);
+}
+
+.info {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+#links__settings-add-section {
+    margin-top: 2rem;
+}
+/* Settings End */
