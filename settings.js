@@ -10,8 +10,7 @@ function createBookmarkSection(title, links, placeholder) {
 	let bookmarkTable = createTable(links);
 
 	// hides table by default
-	bookmarkTable.setAttribute("data-visibility", "invisible");
-
+	toggleVisibility([],[bookmarkTable]);
 	// Give functionality to remove icon
 	let headerRemoveIcon =
 		bookmarkHeader.getElementsByClassName("remove_icon")[0];
@@ -25,10 +24,10 @@ function createBookmarkSection(title, links, placeholder) {
 	headerToggleIcon.addEventListener("click", function () {
 		if (bookmarkTable.getAttribute("data-visibility") == "invisible") {
 			headerToggleIcon.src = "Icons/General/chevron-down.svg";
-			bookmarkTable.setAttribute("data-visibility", "visible");
+			toggleVisibility([bookmarkTable]);
 		} else {
 			headerToggleIcon.src = "Icons/General/chevron-right.svg";
-			bookmarkTable.setAttribute("data-visibility", "invisible");
+			toggleVisibility([],[bookmarkTable]);
 		}
 	});
 
@@ -236,36 +235,24 @@ function addBookmarkElement() {
 // ==============================================
 
 settingsIconElement.addEventListener("click", function(){
-	startPageSection.setAttribute("data-visibility", "invisible")
-	settingsSection.setAttribute("data-visibility", "visible")
-	settingsLinksSection.setAttribute("data-visibility", "visible")
+	toggleVisibility([settingsSection, settingsLinksSection], [startPageSection])
 })
 
 
 settingsCloseButton.addEventListener("click", function (){
-	startPageSection.setAttribute("data-visibility", "visible")
-	settingsSection.setAttribute("data-visibility", "invisible")
-	settingsLinksSection.setAttribute("data-visibility", "invisible")
-	settingsGeneralSection.setAttribute("data-visibility", "invisible")
-	settingsHowToSection.setAttribute("data-visibility", "invisible")
+	toggleVisibility([startPageSection], [settingsSection, settingsLinksSection, settingsGeneralSection, settingsHowToSection])
 })
 
 settingsLinksButton.addEventListener("click", function (){
-	settingsLinksSection.setAttribute("data-visibility", "visible")
-	settingsGeneralSection.setAttribute("data-visibility", "invisible")
-	settingsHowToSection.setAttribute("data-visibility", "invisible")
+	toggleVisibility([settingsLinksSection], [settingsGeneralSection, settingsHowToSection])
 })
 
 settingsGeneralButton.addEventListener("click", function (){
-	settingsLinksSection.setAttribute("data-visibility", "invisible")
-	settingsGeneralSection.setAttribute("data-visibility", "visible")
-	settingsHowToSection.setAttribute("data-visibility", "invisible")
+	toggleVisibility([settingsGeneralSection], [settingsLinksSection, settingsHowToSection])
 })
 
 settingsHowToButton.addEventListener("click", function (){
-	settingsLinksSection.setAttribute("data-visibility", "invisible")
-	settingsGeneralSection.setAttribute("data-visibility", "invisible")
-	settingsHowToSection.setAttribute("data-visibility", "visible")
+	toggleVisibility([settingsHowToSection], [settingsLinksSection, settingsGeneralSection])
 })
 
 // ==============================================

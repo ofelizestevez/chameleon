@@ -42,6 +42,14 @@ body {
     display: none !important;
 }
 
+*[data-visibility="visible"]{
+    animation: fadeIn var(--fade-duration) forwards;
+}
+
+.fade-out {
+    animation: fadeOut var(--fade-duration) forwards;
+}
+
 #content {
     max-width: 1280px;
 }
@@ -201,6 +209,7 @@ start-page section start
 
 #dropdown__menu {
     position: absolute;
+    top: 3rem;
 }
 
 #input__wrapper {

@@ -195,7 +195,7 @@ commandInputElement.addEventListener("keydown", (event) => {
 
 dropdownElement.addEventListener("click", () => {
 	function closeDropdown(){
-		dropdownMenuElement.setAttribute("data-visibility", visibleFalse)
+        toggleVisibility([], [dropdownMenuElement], delay = 500);
 		window.removeEventListener("click", closeDropdown);
 	}
     
@@ -206,7 +206,7 @@ dropdownElement.addEventListener("click", () => {
         closeDropdown()
     }
     else {
-        dropdownMenuElement.setAttribute("data-visibility", visibleTrue)
+        toggleVisibility([dropdownMenuElement]);
         setTimeout(() => {
 			window.addEventListener("click", closeDropdown);
 		}, 1 * 100);
@@ -222,14 +222,9 @@ let suggestions = []
 
 commandInputElement.addEventListener("keyup", (event) => {
     let val = commandInputElement.value;
-    let currentSeachType = eval("new " + commandTextElement.innerHTML.toLowerCase() + "()")
+    let currentSeachType = eval("new " + commandTextElement.innerHTML.toLowerCase() + "()");
     
-    if (suggestionElement.innerHTML == ""){
-		suggestionElement.setAttribute("data-visibility", "invisible")
-    }
-    else {
-		suggestionElement.setAttribute("data-visibility", "visible")
-    }
+
     switch(event.key) {
         case "Enter":
             currentSeachType.query(val)
@@ -241,34 +236,44 @@ commandInputElement.addEventListener("keyup", (event) => {
             else if (suggestionIndex == suggestions.length - 1){
                 suggestionIndex = 0;
             }
-            suggestionElement.innerHTML = suggestions[suggestionIndex]
+            suggestionElement.innerHTML = suggestions[suggestionIndex];
             break
         case "ArrowDown":
-            if (suggestionIndex == 0){
+            if (suggestionIndex == 0 && suggestions.length != 0){
                 suggestionIndex = suggestions.length - 1;
             }
             else if (suggestionIndex < suggestions.length){
                 suggestionIndex--;
             }
-            suggestionElement.innerHTML = suggestions[suggestionIndex]
+            suggestionElement.innerHTML = suggestions[suggestionIndex];
             break
         case "Tab":
             if (suggestions != []){
-                commandInputElement.value = suggestions[suggestionIndex]
+                commandInputElement.value = suggestions[suggestionIndex];
             }
         case "Backspace":
             if (val == ""){
-                suggestionIndex = 0
-                suggestions = ""
-                suggestionElement.innerHTML = ""
-		        suggestionElement.setAttribute("data-visibility", "invisible")
+                suggestionIndex = 0;
+                suggestions = "";
+                
+                setTimeout(() => {
+                    suggestionElement.innerHTML = "";
+                }, 600);
+                toggleVisibility([], [suggestionElement], delay = 500);
+                
             }
             break
         default:
             currentSeachType.suggestion(val)
                 .then(response => {
-                    suggestions = response
-                    suggestionElement.innerHTML = suggestions[suggestionIndex]
+                    suggestions = response;
+                    suggestionElement.innerHTML = suggestions[suggestionIndex];
+                    toggleVisibility([suggestionElement]);
+
+                    if(suggestions.length == 0){
+                        console.log("ITISI")
+                        toggleVisibility([], [suggestionElement]);
+                    }
                 })
             break
     }

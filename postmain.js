@@ -50,6 +50,29 @@ function rgbToHex(r, g, b) {
 	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
+function toggleVisibility(toVisitible = [], toInvisible = [], delay = 0){
+
+	
+	toVisitible.forEach(element => {
+		if (element.classList.contains("fade-out")){
+			element.classList.remove("fade-out");
+		}
+		element.setAttribute("data-visibility", "visible");
+	});
+	toInvisible.forEach(element => {
+		if (delay != 0){
+			element.classList.add("fade-out");
+
+			setTimeout(() => {
+				element.setAttribute("data-visibility", "invisible");
+			}, delay);
+		}
+		else {
+			element.setAttribute("data-visibility", "invisible");
+		}
+	});
+}
+
 // Change Time
 function setTime(userFormat = "") {
 	let time;
@@ -167,7 +190,7 @@ function setWeather() {
 // Change Image + Colors
 function setImageUnsplash(img) {
 	// Get Random Image From Unsplash
-	fetch("https://source.unsplash.com/random/").then((response) => {
+	fetch("https://source.unsplash.com/featured/").then((response) => {
 		let url = response.url;
 		img.crossOrigin = "Anonymous";
 		img.src = url;
