@@ -13,27 +13,29 @@
 </head>
 
 <body>
-    <div id="image-wrapper">
-        <div id="background-image"></div>
+    <div id="image-wrapper" class="clickable">
+        <div id="background-image" class="fill-container-width fill-container-height"></div>
     </div>
     <div id="content">
-        <div id="start-page" data-visibility="visible">
+        <div id="start-page" data-visibility="visible" class="fill-container-width fill-container-height">
             <div id="status-bar">
-                <div id="search" class="general-wrapper general-gap">
-                    <div id="dropdown">
-                        <div id="current-search-selection" class="secondary-popup general-wrapper">
-                            <p id="username">Cobra</p>
-                            <p id="username__separator">/</p>
+                <div id="dropdown" class="fill-container-height">
+                    <div id="current-search-selection" class="secondary-popup general-wrapper fill-container-height">
+                        <img src="./icons/General/chevron-down.svg" id="current-search-type__icon"
+                        class="secondary-icon">
+                        <div id="dropdown__button" class="display-flex">
+                            <p id="username">User</p>
+                            <p id="username__separator">=></p>
                             <p id="current-search-type__text">XXXXXXX</p>
-                            <img src="./icons/General/chevron-down.svg" id="current-search-type__icon"
-                                class="secondary-icon">
                         </div>
-                        <div id="dropdown__menu" class="secondary-popup" data-visibility="invisible"></div>
+
+
                     </div>
-                    <div id="input__wrapper">
-                        <input type="text" id="search-input" class="input" placeholder="Type Here" autocomplete="off">
-                        <p id="suggestion-text" class="secondary-popup"></p>
-                    </div>
+                    <div id="dropdown__menu" class="secondary-popup" data-visibility="invisible"></div>
+                </div>
+                <div id="input__wrapper">
+                    <input type="text" id="search-input" class="fill-container-width input" placeholder="Type Here" autocomplete="off">
+                    <p id="suggestion-text" class="secondary-popup"></p>
                 </div>
                 <div id="info" class="general-wrapper general-gap">
                     <p id="time">XX:XX XX</p>

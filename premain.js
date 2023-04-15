@@ -113,4 +113,9 @@ if (getCookie("styleSet") != "") {
 		"--suggestion-color",
 		localStorage.getItem("suggestion-color")
 	);
+
+	root.style.setProperty(
+		"--input-border-color", 
+		localStorage.getItem("input-border-color")
+	)
 }

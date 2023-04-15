@@ -179,8 +179,8 @@ function setDropdown(){
             })
 
             // Append Content
-			dropdownWrapper.appendChild(dropdownTextElement);
 			dropdownWrapper.appendChild(dropdownIcon);
+			dropdownWrapper.appendChild(dropdownTextElement);
 			dropdownMenuElement.appendChild(dropdownWrapper);
         }
     }
@@ -271,7 +271,6 @@ commandInputElement.addEventListener("keyup", (event) => {
                     toggleVisibility([suggestionElement]);
 
                     if(suggestions.length == 0){
-                        console.log("ITISI")
                         toggleVisibility([], [suggestionElement]);
                     }
                 })

@@ -55,7 +55,7 @@ function createHeader(title, placeholder) {
 
 	// adds classes
 	columnTitleWrapper.classList.add("column_title");
-	columnTitleElement.classList.add("input", "underline", "fakeh2");
+	columnTitleElement.classList.add("input");
 	columnRemoveIcon.classList.add("primary-icon", "remove_icon", "clickable");
 	columnToggleIcon.classList.add("primary-icon", "toggle_icon", "clickable");
 	columnDraggableIcon.classList.add("primary-icon", "drag_icon", "clickable");
@@ -192,8 +192,8 @@ function addTableRow(title, link, titlePlaceholder, linkPlaceholder) {
 
 	// add classes
 	draggableIcon.classList.add("primary-icon", "drag_icon", "clickable");
-	titleInput.classList.add("input", "underline", "longer_input");
-	linkInput.classList.add("input", "underline", "longer_input");
+	titleInput.classList.add("input", "fill-container-width");
+	linkInput.classList.add("input", "fill-container-width");
 	deleteIcon.classList.add("primary-icon", "remove_icon", "clickable");
 
 	// append children to row children
