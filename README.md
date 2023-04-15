@@ -36,11 +36,13 @@ Chameleon is my 2nd startpage developed. It is supposed to be a mixture of my wo
    * **It does have an ability to add new sections and links!**
 
 ## Future Plans (Settings)
-* Give ability to turn off time, date, weather, and/or the full status bar.
-* Give ability to turn off which ever commands you don't use.
-* Give ability to stop theme generation and stick with the current generated theme
-* Give ability to create a theme
-* Give ability to change font (probably just a google font though)
+* turn off time, date, weather, and/or the full status bar.
+* turn off which ever commands you don't use.
+* stop theme generation and stick with the current generated theme
+* theme creation
+* font changing (probably just a google font though)
+* Change Username
+* Change command separator
 
 ## Personal Notes
 
