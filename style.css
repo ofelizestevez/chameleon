@@ -472,6 +472,10 @@ start-page section end
     #content {
         padding-top: 3rem;
     }
+
+    #settings {
+        margin-top: 0px;
+    }
 }
 
 /* Mobile Design End */
