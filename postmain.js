@@ -50,7 +50,7 @@ function rgbToHex(r, g, b) {
 	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-function toggleVisibility(toVisitible = [], toInvisible = [], delay = 0){
+function toggleVisibility(toVisitible = [], toInvisible = [], delay = 0) {
 	toVisitible.forEach(element => {
 		element.setAttribute("data-visibility", "visible");
 	});
@@ -95,7 +95,7 @@ function setWeather() {
 
 		localStorage.setItem("lat", lat);
 		localStorage.setItem("long", long);
-        setWeather();
+		setWeather();
 	}
 
 	if (navigator.geolocation && localStorage.getItem("lat") == null) {
@@ -253,7 +253,7 @@ const img = new Image();
 
 // Theme reload function by clicking on background-image element 
 // (credit to u/Fxzzi for the idea)
-imageElement.addEventListener("click", function(){
+imageElement.addEventListener("click", function () {
 	setImageUnsplash(img)
 })
 
@@ -279,7 +279,7 @@ img.addEventListener("load", function () {
 		(0.299 * imagePalette[0][0] +
 			0.587 * imagePalette[0][1] +
 			0.114 * imagePalette[0][2]) /
-			255 >
+		255 >
 		0.5
 	) {
 		primaryForegroundColor = "#000000";
@@ -293,7 +293,7 @@ img.addEventListener("load", function () {
 		(0.299 * imagePalette[1][0] +
 			0.587 * imagePalette[1][1] +
 			0.114 * imagePalette[1][2]) /
-			255 >
+		255 >
 		0.5
 	) {
 		secondaryForegroundColor = "#000000";
@@ -316,7 +316,7 @@ img.addEventListener("load", function () {
 	setCookie("styleSet", "true", 10);
 
 	// Animates the changing of images by duplicating the original image div, changing it, then use the placeholder to fade it out
-	if (document.getElementById("placeholder-img")){
+	if (document.getElementById("placeholder-img")) {
 		imageWrapper.removeChild(document.getElementById("placeholder-img"))
 	}
 	let placeHolderElement = imageElement.cloneNode();
@@ -324,7 +324,7 @@ img.addEventListener("load", function () {
 	placeHolderElement.id = "placeholder-image"
 	imageWrapper.appendChild(placeHolderElement);
 	placeHolderElement.classList.add("fade-out-image");
-	
+
 	// Saves old colors to use for animation
 	let oldPrimaryBgColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-background-color');
 	let oldSecondaryBgColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-background-color');
@@ -347,7 +347,7 @@ img.addEventListener("load", function () {
 		"--primary-foreground-color",
 		localStorage.getItem("primary-foreground-color")
 	);
-	
+
 	root.style.setProperty(
 		"--primary-invert-value",
 		localStorage.getItem("primary-invert-value")
@@ -366,9 +366,9 @@ img.addEventListener("load", function () {
 		localStorage.getItem("secondary-invert-value")
 	);
 	root.style.setProperty(
-		"--input-border-color", 
+		"--input-border-color",
 		localStorage.getItem("input-border-color")
-		)
+	)
 
 	// Hopefully makes the theme more compatible with Safari 1-bar
 	let themeEl = document.createElement("meta");
@@ -379,7 +379,7 @@ img.addEventListener("load", function () {
 	// Use fade animation duration to remove the animation class after the animation is done
 	// Remove animation class because we want to readd it for another theme change
 	let fadeAnimationDuration = getComputedStyle(document.documentElement).getPropertyValue('--theme-animation-duration')
-	fadeAnimationDuration = fadeAnimationDuration.substring(0,fadeAnimationDuration.length - 1) * 1000
+	fadeAnimationDuration = fadeAnimationDuration.substring(0, fadeAnimationDuration.length - 1) * 1000
 
 	document.body.classList.add("primary-bg-animation")
 	setTimeout(() => {

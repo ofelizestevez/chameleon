@@ -10,7 +10,7 @@ function createBookmarkSection(title, links, placeholder) {
 	let bookmarkTable = createTable(links);
 
 	// hides table by default
-	toggleVisibility([],[bookmarkTable]);
+	toggleVisibility([], [bookmarkTable]);
 	// Give functionality to remove icon
 	let headerRemoveIcon =
 		bookmarkHeader.getElementsByClassName("remove_icon")[0];
@@ -27,7 +27,7 @@ function createBookmarkSection(title, links, placeholder) {
 			toggleVisibility([bookmarkTable]);
 		} else {
 			headerToggleIcon.src = "Icons/General/chevron-right.svg";
-			toggleVisibility([],[bookmarkTable]);
+			toggleVisibility([], [bookmarkTable]);
 		}
 	});
 
@@ -234,24 +234,24 @@ function addBookmarkElement() {
 // Navbar functionality
 // ==============================================
 
-settingsIconElement.addEventListener("click", function(){
+settingsIconElement.addEventListener("click", function () {
 	toggleVisibility([settingsSection, settingsLinksSection], [startPageSection])
 })
 
 
-settingsCloseButton.addEventListener("click", function (){
+settingsCloseButton.addEventListener("click", function () {
 	toggleVisibility([startPageSection], [settingsSection, settingsLinksSection, settingsGeneralSection, settingsHowToSection])
 })
 
-settingsLinksButton.addEventListener("click", function (){
+settingsLinksButton.addEventListener("click", function () {
 	toggleVisibility([settingsLinksSection], [settingsGeneralSection, settingsHowToSection])
 })
 
-settingsGeneralButton.addEventListener("click", function (){
+settingsGeneralButton.addEventListener("click", function () {
 	toggleVisibility([settingsGeneralSection], [settingsLinksSection, settingsHowToSection])
 })
 
-settingsHowToButton.addEventListener("click", function (){
+settingsHowToButton.addEventListener("click", function () {
 	toggleVisibility([settingsHowToSection], [settingsLinksSection, settingsGeneralSection])
 })
 

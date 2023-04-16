@@ -115,7 +115,7 @@ if (getCookie("styleSet") != "") {
 	);
 
 	root.style.setProperty(
-		"--input-border-color", 
+		"--input-border-color",
 		localStorage.getItem("input-border-color")
 	)
 }
