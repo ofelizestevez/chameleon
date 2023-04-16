@@ -378,6 +378,12 @@ start-page section end
 }
 
 @media screen and (max-width: 780px) {
+    body {
+        grid-template-columns: unset;
+        grid-template-rows: 1fr 5fr;
+        height: unset;
+    }
+
     #status-bar {
         display: grid;
         overflow: hidden;
