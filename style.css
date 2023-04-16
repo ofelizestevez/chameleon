@@ -374,19 +374,24 @@ start-page section end
         grid-row: 1;
         justify-content: center;
     }
-
+    #dropdown__menu {
+        top: 5.25rem;
+    }
 }
 
 @media screen and (max-width: 780px) {
     body {
         grid-template-columns: unset;
-        grid-template-rows: 1fr 5fr;
+        grid-template-rows: 1fr;
         height: unset;
+    }
+
+    #image-wrapper {
+        display: none;
     }
 
     #status-bar {
         display: grid;
-        overflow: hidden;
         grid-template-rows: repeat(3, 1fr);
         grid-template-columns: repeat(1, 1fr);
         grid-column-gap: 5px;
@@ -481,6 +486,10 @@ start-page section end
 
     #settings {
         margin-top: 0px;
+    }
+
+    #dropdown__menu {
+        width: 100%;
     }
 }
 
