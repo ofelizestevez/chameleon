@@ -70,6 +70,14 @@ body {
     gap: 8px;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+.clickable:hover {
+    text-decoration: underline;
+}
+
 #background-image,
 #placeholder-image {
     position: absolute;
@@ -271,14 +279,20 @@ start-page section end
     justify-content: center;
     gap: 8rem;
     cursor: pointer;
+    margin-bottom: 2rem;
 }
 
-.clickable {
-    cursor: pointer;
+#links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
-.clickable:hover {
-    text-decoration: underline;
+#links__settings-add-section, #links_settings-save {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 50%;
 }
 
 /* Settings End */
@@ -339,9 +353,124 @@ start-page section end
 
 /* Mobile Design Start */
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1024px) {
     #status-bar {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #dropdown {
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+
+    #input__wrapper {
+        grid-column-start: 3;
+        grid-column-end: 5;
+    }
+    #info {
+        grid-column-start: 1;
+        grid-column-end: 5;
+        grid-row: 1;
+        justify-content: center;
+    }
+
+}
+
+@media screen and (max-width: 780px) {
+    #status-bar {
+        display: grid;
+        overflow: hidden;
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-columns: repeat(1, 1fr);
+        grid-column-gap: 5px;
+        grid-row-gap: 5px;
+        justify-items: stretch;
+    }
+    #dropdown {
+        grid-column: 1;
+    }
+
+    #input__wrapper {
+        grid-column: 1;
+    }
+    #info {
+        grid-column: 1;
+        grid-row: 1;
+        justify-content: center;
+    }
+
+    #settings-icon {
+        position: relative;
+        right: unset;
+        bottom: unset;
+        height: 2rem;
+    }
+    #settings #nav-bar {
+        flex-wrap: wrap;
+        gap: 2rem;
+    }
+
+    .column_title {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    #nav-bar {
+        text-align: center;
+    }
+
+    .input {
+        width: 100%;
+    }
+    
+    #settings thead tr {
+        display: none;
+    }
+
+    #settings tbody tr {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        flex-wrap: wrap;
+        padding: 10px 0px;
+    }
+
+    #settings tbody .table-input {
+        width: calc(100%);
+        order: 4;
+        padding: 4px 0px;
+    }
+
+    #settings tbody tr .trash-icon, #settings tbody tr .draggable-icon {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #settings .empty-cell {
+        display: none;
+    }
+
+    #links {
+        display: flex;
         flex-direction: column;
+        gap: 2rem;
+    }
+
+    .add-links-button {
+        display: flex;
+        justify-content: center;
+    }
+
+    #links__settings-add-section, #links_settings-save {
+        width: 100%;
+    }
+
+    #content {
+        padding-top: 3rem;
     }
 }
 

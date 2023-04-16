@@ -93,10 +93,12 @@ function createTable(links) {
 	let addWrapper = document.createElement("td");
 	let addText = document.createElement("p");
 	let addIcon = document.createElement("img");
+	let emptyCell = document.createElement("td");
 
 	// Sets class names
-	addWrapper.classList.add("info", "clickable");
+	addWrapper.classList.add("info", "clickable", "add-links-button");
 	addIcon.classList.add("primary-icon");
+	emptyCell.classList.add("empty-cell")
 
 	// Set content
 	headerTitle.innerHTML = "Title";
@@ -112,10 +114,10 @@ function createTable(links) {
 
 	addWrapper.appendChild(addText);
 	addWrapper.appendChild(addIcon);
-
-	addRow.appendChild(document.createElement("td"));
+	
+	addRow.appendChild(emptyCell);
 	addRow.appendChild(addWrapper);
-	addRow.appendChild(document.createElement("td"));
+	addRow.appendChild(emptyCell.cloneNode());
 
 	headerWrapper.appendChild(headerRow);
 	footerWrapper.appendChild(addRow);
@@ -195,6 +197,11 @@ function addTableRow(title, link, titlePlaceholder, linkPlaceholder) {
 	titleInput.classList.add("input", "fill-container-width");
 	linkInput.classList.add("input", "fill-container-width");
 	deleteIcon.classList.add("primary-icon", "remove_icon", "clickable");
+
+	draggableElement.classList.add("draggable-icon")
+	titleElement.classList.add("table-input")
+	linkElement.classList.add("table-input")
+	deleteElement.classList.add("trash-icon")
 
 	// append children to row children
 	draggableElement.appendChild(draggableIcon);
