@@ -80,42 +80,41 @@ if (localStorage.getItem("bookmarks") == null) {
 	localStorage.setItem("bookmarks", JSON.stringify(defaultBookmarks));
 }
 
-if (getCookie("styleSet") != "") {
-	root.style.setProperty(
-		"--background-image",
-		'url("' + localStorage.getItem("background-image") + '")'
-	);
-	root.style.setProperty(
-		"--primary-background-color",
-		localStorage.getItem("primary-background-color")
-	);
-	root.style.setProperty(
-		"--primary-foreground-color",
-		localStorage.getItem("primary-foreground-color")
-	);
-	root.style.setProperty(
-		"--primary-invert-value",
-		localStorage.getItem("primary-invert-value")
-	);
-	root.style.setProperty(
-		"--secondary-background-color",
-		localStorage.getItem("secondary-background-color")
-	);
-	root.style.setProperty(
-		"--secondary-foreground-color",
-		localStorage.getItem("secondary-foreground-color")
-	);
-	root.style.setProperty(
-		"--secondary-invert-value",
-		localStorage.getItem("secondary-invert-value")
-	);
-	root.style.setProperty(
-		"--suggestion-color",
-		localStorage.getItem("suggestion-color")
-	);
+root.style.setProperty(
+	"--background-image",
+	'url("' + localStorage.getItem("background-image") + '")'
+);
+root.style.setProperty(
+	"--primary-background-color",
+	localStorage.getItem("primary-background-color")
+);
+root.style.setProperty(
+	"--primary-foreground-color",
+	localStorage.getItem("primary-foreground-color")
+);
+root.style.setProperty(
+	"--primary-invert-value",
+	localStorage.getItem("primary-invert-value")
+);
+root.style.setProperty(
+	"--secondary-background-color",
+	localStorage.getItem("secondary-background-color")
+);
+root.style.setProperty(
+	"--secondary-foreground-color",
+	localStorage.getItem("secondary-foreground-color")
+);
+root.style.setProperty(
+	"--secondary-invert-value",
+	localStorage.getItem("secondary-invert-value")
+);
+root.style.setProperty(
+	"--suggestion-color",
+	localStorage.getItem("suggestion-color")
+);
 
-	root.style.setProperty(
-		"--input-border-color",
-		localStorage.getItem("input-border-color")
-	)
-}
+root.style.setProperty(
+	"--input-border-color",
+	localStorage.getItem("input-border-color")
+)
+
